@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Registration</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/jquery.scrollgress.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-wide.css" />
+		</noscript>
+		
+		<script src="script/Config.js"></script>
+		<script src="script/FormValidation.js"></script>
+		<script src="script/CommonFunctions.js"></script>
+		<script src="script/Links.js"></script>
+		
+		<script type="text/javascript">
+		var keyArray = [];
+		var objectQues = {}
+		objectQues['questionId'];
+		objectQues['answer'];
+		$( document ).ready(function() {
+
+			/* $('input[type=reset]').click(function (){
+				$(".validate").html("");
+				$('input').css("border", "");
+			}); */
+			
+			getAllSecurityQuestions();
+			
+			function getAllSecurityQuestions(){
+				var method = METHOD.get;
+				var url = URL.allSecurityQuestions;
+				serverRequest(url,method,null,securityQuestionsCallBack,false);
+			}
+
+			function securityQuestionsCallBack(responseData){
+				if(responseData.status==STATUS.success){
+					$.each(responseData.data, function(key,value) {
+						$('div#dynamicQuestions').append(""+
+							"<div class='row uniform 50%'>"+
+								"<div class='12u 12u(mobilep)'>"+
+									"<div class='select-wrapper'>"+
+										"<select name='questions"+key+"' id='questions"+key+"'>"+
+											"<option value='select' >--Select Security Question "+key+"--</option>"+
+										"</select>"+
+									"</div>"+
+								"</div>"+
+							"</div>"+
+							"<div class='row uniform 50%'>"+
+								"<div class='12u 12u(mobilep)'>"+
+									"<input type='text' name='securityAns"+key+"' id='securityAns"+key+"' placeholder='Answer to Security Question'/>"+
+									"<div id='securityAns"+key+"Msg' class='validate'></div>"+
+								"</div>"+
+							"</div>");
+						$.each(value.toString().split(','), function(){
+							var res = this.split("~");
+							var id = res[0];
+							var question = res[1];
+							$('#questions'+key).append($("<option />").val(id).text(question));
+						});
+						keyArray[keyArray.length] = key;
+						
+					});
+				}
+			}
+			
+			$('input').focusin(function (){
+				var clicked = $(this).attr('id');
+				modifyFieldCSS(clicked,false);
+			});
+			
+			/* $('input').focusout(function (){
+				var clicked = $(this).attr('id');
+				genericValidation(clicked);
+			}); */
+			
+			$('#email').focusout(function (){
+				var jsonObject = {"username": $('#email').val()};
+				var method = METHOD.post;
+				var url = URL.checkUsername;
+				serverRequest(url,method,jsonObject,emailFocusOutCallBack,false);
+		   	}); 
+			
+			function emailFocusOutCallBack(responseData){
+				var status = responseData.status;
+	        	if(status==STATUS.failure) {
+	        		modifyFieldCSS("email",true);
+	        		$('#emailMsg').html("Given Email address already exist");
+	        	}
+	        	else if(status==STATUS.success){
+	        		modifyFieldCSSForValid("email");
+	        	}
+			}
+		   	
+			function createQueAns(){
+				var objectArray = [];
+				for(var i=0; i<keyArray.length; i++)
+					{
+					objectQues.questionId=document.getElementById("questions"+keyArray[i]).value;
+					objectQues.answer=document.getElementById("securityAns"+keyArray[i]).value;
+					objectArray[i]=objectQues;
+					}
+				return objectArray;
+			}
+			
+	   		$('#registerButton').click(function () {
+	   			if(validateRegistration()==true){
+					var method = METHOD.post;
+					var url = URL.registration;
+					var form = $('form').serializeObject();
+					var userQuesAnsArray = createQueAns();
+					var jsonObject= 
+						{
+						  "authentication":{
+						    "username":form.email,
+						    "password":form.password,
+						    "userQuesAns":userQuesAnsArray
+						  },
+						  "address":{
+							    "city":form.city,
+							    "state":form.state,
+							    "country":form.country
+						  },
+						  "firstName":form.firstName,
+						  "lastName": form.lastName,
+						  "dob": form.dob,
+						  "phone":form.phone
+						  
+						};
+					serverRequest(url,method,jsonObject,registrationCallBack,true);
+	   			}
+	   			else{
+	   			}
+			});
+	   		
+	   		function registrationCallBack(responseData){
+	   			var status = responseData.status;
+	        	if(status==STATUS.failure) {
+	        		alert("registration failed");
+	        	}
+	        	else if(status==STATUS.success) {
+	        		window.location.href = 'Home.html'; 
+	        	}
+	        	else{
+	        		alert("error occured");
+	        	}
+	   		}
+		});
+		</script>
+		   
+</head>
+<body>
+	<!-- Header -->
+		<header id="header" class="skel-layers-fixed">
+			<h1><a href="Index.html">AUI</a> by Tulip</h1>
+			<nav id="nav">
+				<ul>
+					<li><a href="Index.html">Home</a></li>
+					<li><a href="About.html">About</a></li>
+					<li><a href="Contact.html">Contact</a></li>
+					<li><a href="Register.html" class="button">Register</a></li>
+				</ul>
+			</nav>
+		</header>
+
+	<!-- Main -->
+	<section id="main" class="container 75%">
+		<div class="box">
+			<header>
+				<h2 style="text-align: center">Registration</h2>
+				<p style="text-align: center">Tell us something about you</p>
+			</header>
+			<div  class="test"></div>
+			<form id="registrationform" name="registrationform">
+				<div class="row uniform 50%">
+					<div class="6u 12u(mobilep)">
+						<input type="text" name="firstName" id="firstName" placeholder="First Name" />
+						<div id="firstNameMsg" class="validate"></div>
+					</div>
+					<div class="6u 12u(mobilep)">
+						<input type="text" name="lastName" id="lastName" placeholder="Last Name" />
+						<div id="lastNameMsg" class="validate"></div>
+					</div>
+				</div>
+				<div class="row uniform 50%">
+					<div class="12u">
+						<input type="email" name="email" id="email" placeholder="Email" />
+						<div id="emailMsg" class="validate"></div>
+					</div>
+				</div>
+				<div class="row uniform 50%">
+					<div class="12u">
+						<input type="tel" name="phone" id="phone" placeholder="Phone Number" />
+						<div id="phoneMsg" class="validate"></div>
+					</div>
+				</div>
+				<div class="row uniform 50%">
+					<div class="12u">
+						<input type="date" name="dob" id="dob" placeholder="Date Of Birth" />
+						<div id="dobMsg" class="validate"></div>
+					</div>
+				</div>
+				<div class="row uniform 50%">
+					<div class="4u 12u(mobilep)">
+						<input type="text" name="country" id="country" placeholder="country" />
+						<div id="countryMsg" class="validate"></div>
+					</div>
+					<div class="4u 12u(mobilep)">
+						<input type="text" name="state" id="state" placeholder="State" />
+						<div id="stateMsg" class="validate"></div>
+					</div>
+					<div class="4u 12u(mobilep)">
+						<input type="text" name="city" id="city" placeholder="City" />
+						<div id="cityMsg" class="validate"></div>
+					</div>
+				</div>
+				<div id="dynamicQuestions"></div>
+				<BR>
+				<div class="row uniform 50%">
+					<div class="6u 12u(mobilep)">
+						<input type="password" name="password" id="password" placeholder="Password" />
+						<div id="passwordMsg" class="validate"></div>
+					</div>
+					<div class="6u 12u(mobilep)">
+						<input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" />
+						<div id="confirmPasswordMsg" class="validate"></div>
+					</div>
+				</div>
+				
+				<div class="row uniform 50%">
+					<div class="6u 12u(mobilep)">
+						<ul class="actions align-center">
+							<li><input type="button" id="registerButton" class="button special" value="Sign-Up" /></li>
+						</ul>
+					</div>
+					<div class="6u 12u(mobilep)">
+						<ul class="actions align-center">
+							<li><input type="reset" value="Clear" onclick="clearAll()"/></li>
+						</ul>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+	
+	
+	<!-- Footer -->
+	<footer id="footer">
+			<ul class="icons">
+				<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+				<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+				<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+				<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
+				<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+				<li><a href="#" class="icon fa-google-plus"><span class="label">Google+</span></a></li>
+			</ul>
+			<ul class="copyright">
+				<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+			</ul>
+	</footer>
+</body>
+</html>

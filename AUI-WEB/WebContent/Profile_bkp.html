@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Profile</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/jquery.scrollgress.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<script src="js/jquery-1.10.2.js"></script>
+	  	<script src="js/jquery-ui.js"></script>
+		
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-wide.css" />
+		</noscript>
+		<link rel="stylesheet" href="style/commonStyle.css"/>
+		
+		<script src="script/Config.js"></script>
+		<script src="script/FormValidation.js"></script>
+		<script src="script/CommonFunctions.js"></script>
+		<script src="js/tooltipsy.min.js"></script>
+		<script src="script/Links.js"></script>
+<!-- 	 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+ -->  
+ 
+ 	<style type="text/css">
+ 	
+ 		h4 {
+ 			background-image: url(images/Rod.png);
+ 			background-repeat: no-repeat;
+ 			background-position: center;
+ 			height: 33px;
+ 			padding-top: 4px;
+ 			text-align: left;
+ 		}
+ 		
+ 		/* h4:ACTIVE{
+ 			background: url(images/rod_upsign.png);
+		    background-repeat: no-repeat;
+		    background-attachment: fixed;
+		    background-position: center;
+ 		} */
+ 		
+ 		h4:focus {
+		    outline: none;
+		    font-weight: bold;
+		}
+		
+		h4:HOVER {
+		    font-weight: bold;
+		    
+		}
+ 	</style>
+ 	
+	<script type="text/javascript">
+		
+		$(function() {
+		    $( "#accordion" ).accordion({
+		      	heightStyle: "content",
+		    	collapsible: true
+		    });
+		  });
+		
+		$( document ).ready(function (){
+			var checkTooltip=7;
+			
+			$('input').mouseover(function (){
+				var clicked = $(this).attr('id');
+				var selector="#"+clicked;
+				if(checkTooltip>5){
+					applyTooltip(clicked);
+				}
+				else{
+					$(selector).data('tooltipsy').hide();
+				}
+			});
+			
+			function modifyToolTipBehaviour(){
+				var clicked = $(this).attr('id');
+				var selector="#"+clicked;
+				if(checkTooltip>5){
+					applyTooltip(clicked);
+				}
+				else{
+					$(selector).data('tooltipsy').hide();
+				}
+			}
+			
+			$('input').focusin(function (){
+				var clicked = $(this).attr('id');
+				modifyFieldCSS(clicked,false);
+			});
+			
+			getProfileDetails();
+			
+			function getProfileDetails() {
+				var method = METHOD.get;
+				var url = URL.getProfileDetails;
+				serverRequest(url,method,null,getDetailsCallBack,true);
+			}
+			
+			function getDetailsCallBack(responseData){
+				if(responseData.status==STATUS.success){
+				 	var user= responseData.data;
+					$('#firstName').val(user.firstName);
+					$('#lastName').val(user.lastName);
+					$('#dob').val(user.dob);
+					$('#phone').val(user.phone);
+					$('#country').val(user.address.country);
+					$('#state').val(user.address.state);
+					$('#city').val(user.address.city);
+					console.log(user);
+				}
+			}
+			
+			$('#updateButton').click(function () {
+	   			if(validateProfile()==true){
+				var method = METHOD.post;
+				var url = URL.updateProfile;
+				var jsonObject= 
+				{
+				  "address":{
+					    "city":$('#city').val(),
+					    "state":$('#state').val(),
+					    "country":$('#country').val()
+				  },
+				  "firstName":$('#firstName').val(),
+				  "lastName": $('#lastName').val(),
+				  "dob": $('#dob').val(),
+				  "phone":$('#phone').val()
+				};
+				serverRequest(url,method,jsonObject,updateCallBack,true);
+	   			}
+	   			else{
+	   			}
+			});
+			
+			function updateCallBack(responseData){
+	   			var status = responseData.status;
+	   			$('#updateMsg').empty();
+	        	if(status==STATUS.failure) {
+	        		$('#updateMsg').append("<p align='center' style='color:red'>"+responseData.message+"</p>");
+	        	}
+	        	else if(status==STATUS.success) {
+	        		$('#updateMsg').append("<p  align='center' style='color:green'>"+responseData.message+"</p>");
+	        	}
+	        	else{
+	        		$('#updateMsg').append("<p  align='center' style='color:red'>"+responseData.errorMessage+"<p>");
+	        	}
+	        	getProfileDetails();
+	   		}
+			
+			$("#pd").click(function(){
+				
+			});
+			
+			$("#cd").click(function(){
+				
+			});
+		});
+		</script>
+		   
+</head>
+<body >
+	
+	<!-- Header -->
+		<header id="header" class="skel-layers-fixed">
+			<h1><a href="Index.html">ROAM</a></h1>
+			<nav id="nav">
+				<ul>
+					<li><a href="Home.html">Home</a></li>
+					<li><a href="About.html">About</a></li>
+					<li><a href="Contact.html">Contact</a></li>
+					<li>
+								<img id="logo" src="images/Profile.jpg" alt="">
+								<ul>
+									<li><a href="Profile.html">Profile</a></li>
+									<li><a href="#">Update Picture</a></li>
+									<li><a href="Account.html">Account Setting</a></li>
+									<li><a href="" onclick="logoutLink()">Signout</a></li>
+								</ul>
+							</li>
+				</ul>
+			</nav>
+		</header>
+
+	<!-- Main -->
+	<section id="main" class="container 75%">
+		<div class="box special">
+			<header>
+				<h2 style="text-align: center">Profile</h2>
+				<p style="text-align: center">View and Update your details</p>
+			</header>
+			<form id="profileform" name="profileform" method="post">
+			<div id="updateMsg" class="validate"></div>
+			<div id="accordion">
+	 			<h4 id="pd" style="padding-left: 30px">Personal Details</h4>
+				<div>
+					<div class="row uniform 50%">
+						<div class="4u 4u(mobilep)">
+							<p style="padding-top: 9px;text-align: left;padding-left: 40px;font-weight: bold;">Name </p>
+						</div>
+						<div class="4u 4u(mobilep)">
+							<input type="text" class="hashtip" name="firstName" id="firstName" placeholder="First Name" />
+							<div id="firstNameMsg" class="validate"></div>
+						</div>
+						<div class="4u 4u(mobilep)" align="right">
+							<input type="text" name="lastName" id="lastName" placeholder="Last Name" />
+							<div id="lastNameMsg" class="validate"></div>
+						</div>
+					</div>
+					<div class="row uniform 50%">
+						<div class="4u 4u(mobilep)">
+							<p style="padding-top: 9px;text-align: left;padding-left: 40px;font-weight: bold;">Date Of Birth </p>
+						</div>
+						<div class="8u 8u(mobilep)">
+							<input type="date" name="dob" id="dob" placeholder="Date Of Birth" />
+							<div id="dobMsg" class="validate"></div>
+						</div>
+					</div>
+				</div>
+				
+				<h4 id="cd" style="padding-left: 30px;margin-top: 10px">Contact Details</h4>
+				<div>
+					<div class="row uniform 50%">
+						<div class="6u">
+							<p style="padding-top: 9px;text-align: left;padding-left: 40px;font-weight: bold;">Phone Number </p>
+						</div>
+						<div class="6u">
+							<input type="tel" name="phone" id="phone" placeholder="Phone Number" />
+							<div id="phoneMsg" class="validate"></div>
+						</div>
+					</div>
+					<div class="row uniform 50%">
+						<div class="6u">
+							<p style="padding-top: 9px;text-align: left;padding-left: 40px;font-weight: bold;">Country </p>
+						</div>
+						<div class="6u">
+							<input type="text" name="country" id="country" placeholder="country" />
+							<div id="countryMsg" class="validate"></div>
+						</div>
+					</div>
+					<div class="row uniform 50%">
+						<div class="6u">
+							<p style="padding-top: 9px;text-align: left;padding-left: 40px;font-weight: bold;">State </p>
+						</div>
+						<div class="6u">
+							<input type="text" name="state" id="state" placeholder="State" />
+							<div id="stateMsg" class="validate"></div>
+						</div>
+					</div>
+					<div class="row uniform 50%">
+						<div class="6u">
+							<p style="padding-top: 9px;text-align: left;padding-left: 40px;font-weight: bold;">City</p>
+						</div>
+						<div class="6u">
+							<input type="text" name="city" id="city" placeholder="City" />
+							<div id="cityMsg" class="validate"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+				<br/>
+				<div class="row uniform 50%">
+					<div class="6u 12u(mobilep)">
+						<ul class="actions align-center">
+							<li><input id="updateButton" type="button" class="button special" value="Update" /></li>
+						</ul>
+					</div>
+					<div class="6u 12u(mobilep)">
+						<ul class="actions align-center">
+							<li><input type="reset" value="Clear" onclick="clearAll()"/></li>
+						</ul>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+	
+	
+	<!-- Footer -->
+	<footer id="footer">
+			<ul class="icons">
+				<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+				<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+				<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+				<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
+				<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+				<li><a href="#" class="icon fa-google-plus"><span class="label">Google+</span></a></li>
+			</ul>
+			<ul class="copyright">
+				<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+			</ul>
+	</footer>
+</body>
+</html>

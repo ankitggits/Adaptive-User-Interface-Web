@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Deals & Offers</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/jquery.scrollgress.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-wide.css" />
+		</noscript>
+		<link rel="stylesheet" href="style/commonStyle.css"/>
+		
+		<style type="text/css">
+			h4{
+				text-align: center;
+			}
+		</style>
+		
+		<script src="script/Config.js"></script>
+		<script src="script/FormValidation.js"></script>
+		<script src="script/CommonFunctions.js"></script>
+		<script src="script/Links.js"></script>
+		
+	</head>
+	<body>
+		<!-- Header -->
+		<header id="header" class="skel-layers-fixed">
+			<h1><a href="Index.html">ROAM</a></h1>
+			<nav id="nav">
+				<ul>
+					<li><a href="Home.html">Home</a></li>
+					<!-- <li><a href="About.html">About</a></li>
+					<li><a href="Contact.html">Contact</a></li> -->
+					<li><a href="" onclick="redirectWithUserLevel('Profile');">Profile</a></li>
+					<li><a href="" class="button" onclick="logoutLink()">Signout</a></li>
+					<!-- <li>
+						<img id="logo" src="images/Profile.jpg" alt="">
+						<ul>
+							<li><a href="" onclick="redirectWithUserLevel('Profile');">Profile</a></li>
+							<li><a href="#">Update Picture</a></li>
+							<li><a href="#">Option Three</a></li>
+							<li><a href="" class="button" onclick="logoutLink()">Signout</a></li>
+						</ul>
+					</li> -->
+				</ul>
+			</nav>
+		</header>
+		
+		<!-- Main -->
+		<section id="main" class="container">
+				<!-- <div class="box">
+				<form action="/profile" method="POST" enctype="multipart/form-data">
+							<input type=hidden name=x-csrf-token value="NnEhC44LdHXJMlgLeYZEXPdRjhGXQgHR">
+							<div class="cf separated--bottom">
+								<h2>General Information
+									<span class="btn btn--hard btn--negative btn--immutable push--left">There were errors</span>
+								</h2>
+							</div>
+							<div class="form-grid form-grid--bordered">
+								<div class="grid">
+									<div class="grid__item form-grid__item one-half palm-one-whole">
+										<div class="form-group form-group--inline">
+											<label for="profile-name" class="form-group__label">Name</label>
+											<div class="form-group__field">
+												<div class="grid">
+													<div class="grid__item one-half">
+														<input type="text" id="profile-name" name="first_name" value="ankit" class="text-input form-field--full"/>
+													</div>
+													<div class="grid__item one-half">
+														<input type="text" name="last_name" value="singh"class="text-input-form-field--full"/>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								<div class="grid__item form-grid__item one-half palm-one-whole">
+									<div class="form-group form-group--inline">
+										<label for="profile-country" class="form-group__label">Location</label>
+											<div class="form-group__field">
+												<div class="grid">
+													<div class="grid__item two-thirds">
+														<select id="profile-country" name="country_id" data-enhanced-select="data-enhanced-select" class="form-field--full">
+															<option value="1">United States</option>
+															<option value="2">Afghanistan</option>
+															<option value="3">Albania</option>
+															<option value="4">Algeria</option>
+															<option value="246">American Samoa</option>
+															<option value="5">Andorra</option>
+															<option value="6">Angola</option>
+														</select>
+													</div>
+													<div class="grid__item one-third">
+														<input type="text" name="location" value="00000" class="text-input form-field--full"/>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-grid form-grid--bordered">
+								<div class="grid">
+									<div class="grid__item form-grid__item one-half palm-one-whole">
+										<div id="profile-email-list" class="form-fields">
+											<div id="profile-email-section-1" class="form-group form-group--inline form-fields__item">
+												<label for="profile-email" class="form-group__label">Email Address</label>
+												<div class="form-group__field">
+													<div class="inline-group input-group">
+														<div class="inline-group__item inline-group__item--full">
+															<input type="email" id="profile-email" name="email" value="ankitbaba1489@gmail.com" class="text-input form-field--full"/>
+														</div>
+														<div class="inline-group__item">
+															<a href="#" data-clone="[data-profile-email-template]" data-clone-to="#profile-email-list" class="btn">
+																<span class="icon icon_plus"></span>
+															</a>
+														</div>
+													</div>
+												<div class="caption caption--flush">
+													<span>Not Verified (</span><a href="#" data-trigger="#resend-confirm-email-form" 		data-trigger-event="submit">resend</a><span>)
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="grid__item form-grid__item one-half palm-one-whole">
+									<div class="form-group form-group--inline">
+										<label for="profile-language" class="form-group__label">Language</label>
+										<div class="form-group__field">
+											<select id="profile-language" name="language_id" data-enhanced-select="data-enhanced-select" class="form-field--full">
+												<option value="1">English</option>
+												<option value="2">Français</option>
+												<option value="3">Nederlands</option>
+												<option value="4">Español</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-grid form-grid--bordered">
+							<div class="grid">
+								<div class="grid__item form-grid__item one-half palm-one-whole">
+									<div class="form-group form-group--inline">
+										<label for="profile-mobile-country" class="form-group__label">Mobile</label>
+										<div class="form-group__field">
+											<select id="profile-mobile-country" name="mobile_country_id" data-enhanced-select="data-enhanced-select" class="form-field--full">
+												<option value="1">United States +1</option>
+												<option value="2">Afghanistan +93</option>
+												<option value="3">Albania +355</option>
+												<option value="4">Algeria +213</option>
+												<option value="246">American Samoa +1</option>
+												<option value="5">Andorra +376</option>
+												<option value="6">Angola +244</option>
+												<option value="213">Anguilla +1</option>
+											</select>
+											<div class="soft--top">
+												<input type="tel" name="mobile" value="7304333173" class="text-input form-field--full"/>
+											</div>
+											<div class="caption caption--flush">
+												<span>Not Verified (</span><a href="#" data-trigger="#resend-confirm-mobile-form" data-trigger-event="submit">resend</a><span>)</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="grid__item form-grid__item one-half palm-one-whole">
+									<div class="form-group form-group--inline">
+										<label for="profile-invite" class="form-group__label">Invite Code</label>
+										<div class="form-group__field">
+											<div class="flexbox profile-invite-code-form hidden">
+												<div class="flexbox__item"></div>
+												<div class="flexbox__item text--right">
+													<a href="#" data-display-toggle=".profile-invite-code-form" class="milli">Customize</a>
+												</div>
+											</div>
+										<div class="profile-invite-code-form">
+											<div class="flexbox">
+												<div class="flexbox__item soft-half--right">uber</div>
+												<div class="flexbox__item">
+													<div class="inline-group input-group">
+														<div class="inline-group__item">
+															<input type="text" name="referral_code" value="" class="text-input form-field--full form-field--error"/>
+															<div class="caption caption--flush color--negative">Code already exists</div>
+														</div>
+													<div class="inline-group__item">
+														<button type="submit" data-button-loader="#profile-invite-loader" class="btn btn--dark">
+															<span class="btn-loader collapse" id="profile-invite-loader">
+																<span class="icon icon_spinner"></span>
+															</span>
+															<span>Claim</span>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-grid form-grid--bordered">
+					<div class="grid">
+						<div class="grid__item form-grid__item one-half palm-one-whole">
+							<div class="form-group form-group--inline form-group--inline--tall">
+								<label for="profile-photo" class="form-group__label">Profile Photo</label>
+								<div class="form-group__field">
+									<div class="grid">
+										<div class="grid__item one-quarter">
+											<img src="https://d297l2q4lq2ras.cloudfront.net/nomad/2015/4/20/16/480x480_id_86b02a41-a2a1-4c29-bc59-35f31b87cf39.jpeg" width="50" height="50" class="img--bordered img--circle img--flush"/>
+										</div>
+									<div class="grid__item three-quarters">
+										<input type="file" id="profile-photo" name="picture" class="hidden"/>
+										<label for="profile-photo" class="file-input">Set Picture</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="grid__item form-grid__item one-half palm-one-whole">
+						<div class="form-group form-group--inline form-group--inline--tall">
+							<label for="profile-password" class="form-group__label">Password</label>
+							<div class="form-group__field">
+								<div class="profile-password-form flexbox">
+									<div class="flexbox__item">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&nbsp;</div>
+									<div class="flexbox__item text--right">
+										<a href="#" data-display-toggle=".profile-password-form" class="milli">Change</a>
+									</div>
+								</div>
+								<div class="profile-password-form form-fields hidden">
+									<input type="password" name="current_password" value="" placeholder="Current Password" autocomplete="off" class="text-input form-field--full form-fields__item"/>
+									<input type="password" name="password" value="" placeholder="New Password" autocomplete="off" class="text-input form-field--full form-fields__item"/>
+									<input type="password" name="confirm_password" value="" placeholder="Confirm Password" autocomplete="off" class="text-input form-field--full form-fields__item"/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-grid separated--bottom">
+				<div class="grid">
+					<div class="grid__item form-grid__item one-third palm-one-whole center-block">
+						<button type="submit" data-button-loader="#profile-form-loader" class="btn btn--large btn--full btn--primary">
+							<span class="btn-loader collapse" id="profile-form-loader">
+								<span class="icon icon_spinner alpha"></span>
+							</span>
+							<span>Update Profile</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+				
+				</div> -->
+				
+				<div class="row">
+					<div class="6u 12u(narrower)">
+						<section class="box special">
+							<span class="image featured"><img src="images/offer01.jpg" alt=""/></span>
+							<h3>Sed lorem adipiscing</h3>
+							<p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
+							<ul class="actions">
+								<li><a href="#" class="button alt">Learn More</a></li>
+							</ul>
+						</section>
+					</div>
+					<div class="6u 12u(narrower)">
+						<section class="box special">
+							<span class="image featured"><img src="images/offer04.jpg" alt="" /></span>
+							<h3>Sed lorem adipiscing</h3>
+							<p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
+							<ul class="actions">
+								<li><a href="#" class="button alt">Learn More</a></li>
+							</ul>
+						</section>
+
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="12u 12u(narrower)">
+						<section class="box special">
+							<span class="image featured"><img src="images/offer02.jpg" alt="" /></span>
+							<h3>Sed lorem adipiscing</h3>
+							<p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
+							<ul class="actions">
+								<li><a href="#" class="button alt">Learn More</a></li>
+							</ul>
+						</section>
+					</div>
+				</div>
+		</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+					<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
+					<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+					<li><a href="#" class="icon fa-google-plus"><span class="label">Google+</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Untitled. All rights reserved.</li><li>Design: Ankit Singh</li>
+				</ul>
+			</footer>
+
+	</body>
+</html>

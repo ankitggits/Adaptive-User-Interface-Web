@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Index</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/jquery.scrollgress.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-wide.css" />
+		</noscript>
+		
+		<script src="script/Config.js"></script>
+		<script src="script/FormValidation.js"></script>
+		<script src="script/CommonFunctions.js"></script>
+		<script src="script/Links.js"></script>
+		
+		<script type="text/javascript">
+			
+			$( document ).ready(function() {
+				
+				$('form#login').submit(function () {
+		   			if(validateLogin()==true){
+			   			var jsonObject = $(this).serializeObject();
+			   			console.log(JSON.stringify(jsonObject));
+						var method = METHOD.post;
+						var url = URL.login;
+						serverRequest(url,method,jsonObject,loginCallBack,true );
+					 }
+					else {
+						alert("validation failed");
+					}
+		   			return false;
+				});
+			   			
+				function loginCallBack(responseData) {
+              		
+					if(responseData.status==STATUS.success)
+          			{
+              			window.location.href = 'Home.html';
+          			}
+              		else if(responseData.status==STATUS.failure)
+              		{
+              			alert(responseData.message);
+              		}
+              		else{
+              			alert(responseData.errorMessage);
+              		}
+              	}
+			   			
+		   });
+	</script>
+	
+	
+	</head>
+	
+	<body class="landing">
+		<div id="myDiv"></div>
+		<!-- Header -->
+			<header id="header" class="alt">
+				<h1><a href="Index.html">AUI</a> by Tulip</h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="Index.html">Home</a></li>
+						<li><a href="About.html">About</a></li>
+						<li><a href="Contact.html">Contact</a></li>
+						<li><a href="Register.html" class="button">Register</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Banner -->
+			<section id="banner">
+				<h2>Roam</h2>
+				<p>A place to start your journey</p>
+				<ul class="actions">
+					<li><a href="#Sign-In" class="button special">Sign In</a></li>
+					<li><a href="#main" class="button">Learn More</a></li>
+				</ul>
+			</section>
+
+	 	<!-- Main -->
+			<section id="main" class="container">
+				<section class="box special">
+					<header class="major">
+						<h2>A Journey Of Epic Proportions
+						<br />
+						The Pride Of Our Nation</h2>
+						<p></p>
+					</header>
+					<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>
+				</section>
+			   <div id="Sign-In"></div>
+			</section> 
+			
+			<BR>
+		<!-- CTA -->
+			<section id="cta">
+				<h2>Sign in to ROAM</h2>
+				<form name="login" id="login" method="post">
+					<div class="row uniform 50%">
+						<div class="2u 12u(mobilep)"></div>
+						<div class="8u 12u(mobilep)">
+							<input type="email"  name="username" id="username" placeholder="Email Address" />
+						</div>
+						<div class="2u 12u(mobilep)"></div>
+					</div>
+					<div class="row uniform 50%">
+						<div class="2u 12u(mobilep)"></div>
+						<div class="8u 12u(mobilep)">
+							<input type="password" name="password" id="password" placeholder="Password" />
+						</div>
+						<div class="2u 12u(mobilep)"></div>
+					</div>
+					<div class="row uniform 50%">
+						<div class="2u 12u(mobilep)"></div>
+						<div class="4u 12u(mobilep)">
+							<input type="submit" value="Sign In" class="fit"/>
+						</div>
+						<div class="4u 12u(mobilep)">
+							<input type="reset" value="Clear" class="fit" />
+						</div>
+						<div class="2u 12u(mobilep)"></div>
+					</div>
+					<div class="row uniform 50%">
+						<div class="2u 12u(mobilep)"></div>
+						<div class="8u 12u(mobilep)">
+							<h4><a href="ForgotPassword.html" >Forgot Password?</a></h4>
+						</div>
+						
+						<div class="2u 12u(mobilep)"></div>
+					</div>
+					
+				</form>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+					<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
+					<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+					<li><a href="#" class="icon fa-google-plus"><span class="label">Google+</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">Ankit Singh</a></li>
+				</ul>
+			</footer>
+	</body>
+</html>

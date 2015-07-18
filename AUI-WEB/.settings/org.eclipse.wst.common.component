@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="AUI-WEB">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/images" source-path="/WebContent/images"/>
+        <property name="context-root" value="AUI-WEB"/>
+        <property name="java-output-path" value="/AUI-WEB/build/classes"/>
+    </wb-module>
+</project-modules>

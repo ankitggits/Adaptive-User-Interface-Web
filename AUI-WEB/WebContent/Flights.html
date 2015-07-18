@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Search Flights</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/jquery-ui.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-wide.css" />
+		</noscript>
+		<link rel="stylesheet" href="style/commonStyle.css"/>
+		
+		<script src="script/Config.js"></script>
+		<script src="script/FormValidation.js"></script>
+		<script src="script/CommonFunctions.js"></script>
+		<script src="script/Links.js"></script>
+		
+		<style type="text/css">
+			/* th,td:{
+				text-align: center;
+			} */
+			
+			th {
+				background-image: url(images/headerBgImg.png);
+				background-repeat: repeat-x;
+			}
+		</style>
+		
+		<script type="text/javascript">
+			
+			function modifyDatePicker(i){
+				if(i==0)$("#doubledp").hide();
+				else $("#doubledp").show();
+			}
+			
+			function changeMinDateOfReturn(){
+				var journeyDate = document.getElementById("journeyDate").value;
+				if(journeyDate!="") document.getElementById("returnDate").min = journeyDate;  
+			}
+			
+			function replan(){
+				$('#message').empty();
+				$("#result").empty();
+			}
+			
+			$( document ).ready(function() {
+				var jsonObject = null;
+				
+				restrictDate('journeyDate',true);
+				restrictDate('returnDate',true);
+				
+				$('input').click(function(){
+					$('#message').empty();
+				});
+				
+				$('#searchFlight').click(function () {
+					$("#result").empty();
+					var url = URL.searchFlight;
+					var method = METHOD.post;
+					jsonObject = $("form").serializeObject();
+		   			console.log(JSON.stringify(jsonObject));
+					serverRequest(url,method,jsonObject,findFlightsCallBack,true);
+				});
+				
+				function findFlightsCallBack(responseData){
+					if(responseData.status==STATUS.success)
+	      			{
+						$("#result").append(""+
+							"<div class='12u'>"+
+								"<section class='box'>"+
+									"<h3 style='text-align:center;'>Result</h3>"+
+									"<div class='table-wrapper'>"+
+										"<table id = 'searchedFlightsTbl'>"+
+											"<thead>"+
+												"<tr>"+
+													"<th style='padding-top:10px;font-size: 100%;'><b>Name</b></th>"+
+													"<th style='padding-top:10px;font-size: 100%;'><b>Departure</b></th>"+
+													"<th style='padding-top:10px;font-size: 100%;'><b>Arrival</b></th>"+
+													"<th style='padding-top:10px;font-size: 100%;'><b>Price</b></th>"+
+												"</tr>"+
+											"</thead>"+
+											"<tbody>"+
+											"<tr></tr>"+
+											"</tbody>"+
+										"</table>"+
+									"</div>"+
+								"</section>"+
+							"</div>"		
+						);
+						$.each(responseData.data, function(index, flight) {
+							var fare = 0;
+							if(jsonObject.compartment=="economy") 
+								 fare =  flight.economyfare;
+							else fare =  flight.businessfare;
+							
+							$("#searchedFlightsTbl tbody").append("<tr style='width:50px'>"+
+								"<td id='flightLogoTd'><img id='flightlogo' src='images/Flights/"+flight.name+".png'></td>"+
+									"<td><h4 style='margin-bottom: auto;'>"+flight.departure+"</h4><h5> "+flight.source+"</h5></td>"+
+									"<td><h4 style='margin-bottom: auto;'>"+flight.arrival+"</h4><h5> "+flight.destination+"</h5></td>"+
+									"<td>"+fare+"</td>"+
+								"</tr>");
+						});
+						$("#result").show();
+						$("#scrollToFlights").click();
+	      			}
+	          		else if(responseData.status==STATUS.failure)
+	          		{
+	          			$('#message').empty();
+	          			$('#message').append("<footer><h4 style='color:red'>No Flights Found!!!</h4></footer>");
+	          			$("#scrollToMessage").click();
+	          			$( "#message" ).effect( "shake" );
+	          		}
+	          		else{
+	          			alert(responseData.errorMessage);
+	          		}
+				}
+			});
+			
+		</script>
+
+</head>
+<body>
+
+		<!-- Header -->
+		<header id="header" class="skel-layers-fixed">
+			<h1><a href="Index.html">ROAM</a></h1>
+			<nav id="nav">
+				<ul>
+					<li><a href="Home.html">Home</a></li>
+					<!-- <li><a href="About.html">About</a></li>
+					<li><a href="Contact.html">Contact</a></li> -->
+					<li><a href="" onclick="redirectWithUserLevel('Profile');">Profile</a></li>
+					<li><a href="" class="button" onclick="logoutLink()">Signout</a></li>
+					<!-- <li>
+						<img id="logo" src="images/Profile.jpg" alt="">
+						<ul>
+							<li><a href="" onclick="redirectWithUserLevel('Profile');">Profile</a></li>
+							<li><a href="#">Update Picture</a></li>
+							<li><a href="#">Option Three</a></li>
+							<li><a href="" class="button" onclick="logoutLink()">Signout</a></li>
+						</ul>
+					</li> -->
+				</ul>
+			</nav>
+		</header>
+		
+		
+		<!-- Main -->
+		<section id="main" class="container 75%">
+				<!-- <header>
+					<h2>Plan Your Journey</h2>
+				</header> -->
+				<div class="row">
+					<div class="12u 12u(mobilep)">
+
+						<section class="box special" id="formSection">
+							<header>
+								<h3>Plan Your Journey</h3>
+							</header>
+							<form name="FlightSearch" id="FlightSearch" method="post">
+							<div class="row uniform 50%">
+									<div class="3u 3u(mobilep)"><h4 align="left" ><b>Trip: </b></h4></div>
+									<div class="4u 4u(mobilep)">
+										<input type="radio" id="oneWay" name="way" onchange="modifyDatePicker(0);" checked value="oneway">
+										<label for="oneWay">One Way &nbsp&nbsp&nbsp&nbsp</label>
+									</div>
+									<div class="5u 5u(mobilep)">
+										<input type="radio" id="roundTrip" name="way" onchange="modifyDatePicker(1);" value="roundTrip">
+										<label for="roundTrip">Round Trip</label>
+									</div>
+							</div>
+							
+							<div class="row uniform 50%">
+								<div class="12u 12u(mobilep)">
+									<input type="text" name="source" id="source" list="cityList" placeholder="Source" />
+								</div>
+							</div>
+							<div class="row uniform 50%">
+								<div class="12u 12u(mobilep)">
+									<input type="text" name="destination" id="destination" list="cityList" placeholder="Destination" />
+								</div>
+							</div>
+							<div class="row uniform 50%" id="singledp">
+								<div class="3u 3u(mobilep)"><h4 style="text-align: left;padding-top: 7px" ><b>Journey Date: </b></h4></div>
+								<div class="9u 9u(mobilep)">
+									<input type="date" name="journeyDate" id="journeyDate" value="" placeholder="Journey Date"/>
+								</div>
+							</div>
+							<div class="row uniform 50%" id="doubledp" hidden="true">
+								<div class="3u 3u(mobilep)"><h4 style="text-align: left;padding-top: 7px" ><b>Return Date: </b></h4></div>
+								<div class="9u 9u(mobilep)">
+									<input type="date" name="returnDate" id="returnDate" value="" placeholder="Return date"  onfocus="changeMinDateOfReturn()"/>
+								</div>
+							</div>
+							<div class="row uniform 50%">
+									<div class="3u 3u(mobilep)"><h4 style="text-align: left" ><b>Class: </b></h4></div>
+									<div class="4u 4u(mobilep)">
+										<input type="radio" id="economy" name="compartment" checked value="economy">
+										<label for="economy">Economy</label>
+									</div>
+									<div class="5u 5u(mobilep)">
+										<input type="radio" id="business" name="compartment" value="business">
+										<label for="business">Business</label>
+									</div>
+							</div>
+							<BR>
+							<div class="row uniform 50%">
+								<div class="6u 6u(mobilep)">
+									<input type="number" name="passengers" id="passengers" placeholder="No. of Passengers" min="1"/>
+								</div>
+								<div class="6u 6u(mobilep)" align="right">
+									<input type="reset" value="Replan" class="alt" onclick="replan()" style="width: 150px"/>
+								</div>
+							</div>
+							<div class="row uniform 50%">
+								<div class="12u 12u(mobilep)">
+									<input type="button" id="searchFlight" class="button special icon fa-search" style="width: 300px" value="Find">
+								</div>
+							</div>
+							<a href="#formSection" id="scrollToMessage" hidden="true"></a>
+							<a href="#resultStart" id="scrollToFlights" hidden="true"></a>
+							</form>
+							
+							<div id="message"></div>
+							<datalist id="cityList">
+								<option value="Mumbai">
+								<option value="Banglore">
+								<option value="Delhi">
+							</datalist>
+						</section>
+					</div>
+				</div>
+				<div id='resultStart'><BR><BR><BR></div>
+				<div class="row" id="result"></div>
+	</section>
+		
+		
+		
+<!-- Footer -->
+	<footer id="footer">
+			<ul class="icons">
+				<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+				<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+				<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+				<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
+				<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+				<li><a href="#" class="icon fa-google-plus"><span class="label">Google+</span></a></li>
+			</ul>
+			<ul class="copyright">
+				<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+			</ul>
+	</footer>
+
+</body>
+</html>

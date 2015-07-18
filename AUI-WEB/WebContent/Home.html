@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/jquery.scrollgress.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-wide.css" />
+		</noscript>
+		<link rel="stylesheet" href="style/commonStyle.css"/>
+		
+		<script src="script/Config.js"></script>
+		<script src="script/FormValidation.js"></script>
+		<script src="script/CommonFunctions.js"></script>
+		<script src="script/Links.js"></script>
+		
+		<script type="text/javascript">
+			$( document ).ready(function() {
+			});
+		</script>
+
+</head>
+<body>
+
+<!-- Header -->
+		<header id="header" class="skel-layers-fixed">
+			<h1><a href="Index.html">ROAM</a></h1>
+			<nav id="nav">
+				<ul>
+					<li><a href="Home.html">Home</a></li>
+					<!-- <li><a href="About.html">About</a></li>
+					<li><a href="Contact.html">Contact</a></li> -->
+					<li><a href="" onclick="redirectWithUserLevel('Profile');">Profile</a></li>
+					<li><a href="" class="button" onclick="logoutLink()">Signout</a></li>
+					<!-- <li>
+						<img id="logo" src="images/Profile.jpg" alt="">
+						<ul>
+							<li><a href="" onclick="redirectWithUserLevel('Profile');">Profile</a></li>
+							<li><a href="#">Update Picture</a></li>
+							<li><a href="#">Option Three</a></li>
+							<li><a href="" class="button" onclick="logoutLink()">Signout</a></li>
+						</ul>
+					</li> -->
+				</ul>
+			</nav>
+		</header>
+		
+		<!-- Main -->
+		<section id="main" class="container 75%">
+				<header><h2>Choose Operation</h2></header>
+				<section class="box special features">
+				
+					<div class="features-row">
+						<section>
+							<span class="icon major fa-bolt accent2" id="bookTicket" onclick="searchContent('bookTicket')" style="cursor: pointer;"></span>
+							<h4>Book Ticket</h4>
+							<p>Book Domestic and International Flight Tickets</p>
+						</section>
+						<section>
+							<span class="icon major fa-area-chart accent3" id="offers" onclick="searchContent('offers')" style="cursor: pointer;"></span>
+							<h4>Deals and Offers</h4>
+							<p>Choose from best deals and offers</p>
+						</section>
+					</div>
+					<div class="features-row">
+						<section>
+							<span class="icon major fa-cloud accent4" id="history" onclick="searchContent('history')" style="cursor: pointer;"></span>
+							<h4>History</h4>
+							<p>View your all transaction histories and bookings</p>
+						</section>
+						<section>
+							<span class="icon major fa-lock accent5" id="mngAccount" onclick="searchContent('mngAccount')" style="cursor: pointer;"></span>
+							<h4>Manage Account</h4>
+							<p>View or update your account related information</p>
+						</section>
+					</div>
+				</section>
+	</section>
+		
+		
+		
+<!-- Footer -->
+	<footer id="footer">
+			<ul class="icons">
+				<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+				<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+				<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+				<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
+				<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+				<li><a href="#" class="icon fa-google-plus"><span class="label">Google+</span></a></li>
+			</ul>
+			<ul class="copyright">
+				<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+			</ul>
+	</footer>
+
+</body>
+</html>
