@@ -137,6 +137,8 @@ function applyTooltip(fieldId){
 	var tooltipId="";
 	
 	switch(fieldId){
+		
+		//Profile_Low.html
 		case "firstName"	:tooltipId= TOOLTIP.firstName;break;
 		case "lastName"		:tooltipId= TOOLTIP.lastName;break;
 		case "dob"			:tooltipId= TOOLTIP.dob;break;
@@ -145,6 +147,20 @@ function applyTooltip(fieldId){
 		case "state"		:tooltipId= TOOLTIP.state;break;
 		case "city"			:tooltipId= TOOLTIP.city;break;
 		case "updateButton"	:tooltipId= TOOLTIP.updateButton;break;
+		
+		//Account_Low.html
+		case "oldPassword"	:tooltipId= TOOLTIP.oldPassword;break;
+		case "newPassword"	:tooltipId= TOOLTIP.newPassword;break;
+		case "confirmPassword"	:tooltipId= TOOLTIP.confirmPassword;break;
+		case "questions1"	:tooltipId= TOOLTIP.questions1;break;
+		case "questions2"	:tooltipId= TOOLTIP.questions2;break;
+		case "questions3"	:tooltipId= TOOLTIP.questions3;break;
+		case "securityAns1"	:tooltipId= TOOLTIP.securityAns1;break;
+		case "securityAns2"	:tooltipId= TOOLTIP.securityAns2;break;
+		case "securityAns3"	:tooltipId= TOOLTIP.securityAns3;break;
+		case "resetPassword":tooltipId= TOOLTIP.resetPassword;break;
+		
+		
 		case "reset"		:tooltipId= TOOLTIP.reset;break;
 		default				:tooltipId= TOOLTIP.xyz;break;
 	}

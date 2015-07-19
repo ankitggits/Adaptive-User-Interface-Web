@@ -63,14 +63,12 @@
 		
 		$( document ).ready(function (){
 			
-			abc();
-
-			function abc(){
-				$('input').each(function(){
-				    var id = $(this).attr('id');
-					applyTooltip(id);
-				});
-			}
+			
+			$('input').each(function(){
+			    var id = $(this).attr('id');
+				applyTooltip(id);
+			});
+			
 			
 			$('input').focusin(function (){
 				var clicked = $(this).attr('id');

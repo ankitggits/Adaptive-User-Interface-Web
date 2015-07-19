@@ -31,8 +31,22 @@
  
  	<style type="text/css">
  		h4 {
- 			background-image: url(http://192.168.1.5:8081/AUI-WEB/images/headerBgImg.png);
+ 			background-image: url(images/Rod.png);
+ 			background-repeat: no-repeat;
+ 			background-position: center;
+ 			height: 33px;
+ 			padding-top: 4px;
+ 			text-align: left;
  		}
+ 		h4:focus {
+		    outline: none;
+		    font-weight: bold;
+		}
+		
+		h4:HOVER {
+		    font-weight: bold;
+		    
+		}
  	</style>
 	
 	<script type="text/javascript">
@@ -44,20 +58,13 @@
 		
 		$( document ).ready(function (){
 			
-			$(function() {
-			    $( "#accordion" ).accordion({
-			      	heightStyle: "content",
-			    	collapsible: true
-			    });
-			  });
-			
 			getAllSecurityQuestions();
 			getUserSecurityQuestions();
 			
 			function getAllSecurityQuestions(){
 				var method = METHOD.get;
 				var url = URL.allSecurityQuestions;
-				serverRequest(url,method,null,securityQuestionsCallBack,false);
+				serverRequest(url,method,null,securityQuestionsCallBack,true);
 			}
 
 			function securityQuestionsCallBack(responseData){
@@ -98,7 +105,7 @@
 				
 				var method = METHOD.get;
 				var url = URL.existingAccountUserQuestions;
-				serverRequest(url,method,null,userSecurityQuestionsCallBack,false);
+				serverRequest(url,method,null,userSecurityQuestionsCallBack,true);
 		   	}
 			
 			 function userSecurityQuestionsCallBack(responseData){
@@ -147,7 +154,7 @@
 						{
 						    "password":document.getElementById('oldPassword').value
 						};
-					serverRequest(url,method,jsonObject,validatePasswordCallBack,false);
+					serverRequest(url,method,jsonObject,validatePasswordCallBack,true);
 				}
 				else{
 					alert("Validation failed");
@@ -162,7 +169,7 @@
 					{
 					    "password":document.getElementById('confirmPassword').value
 					};
-				serverRequest(url,method,jsonObject,resetPasswordCallBack,false);
+				serverRequest(url,method,jsonObject,resetPasswordCallBack,true);
 			 }
 			 else if(responseData.status==STATUS.failure){
 				 alert("Old Password is incorrect");
@@ -202,7 +209,7 @@
 					{
 						 "userQuesAns":userQuesAnsArray
 					};
-				serverRequest(url,method,jsonObject,updateSecurityQuestionsCallBack,false);
+				serverRequest(url,method,jsonObject,updateSecurityQuestionsCallBack,true);
 		 }
 		 
 		 function updateSecurityQuestionsCallBack(responseData){
@@ -257,8 +264,8 @@
 			</header>
 			<div id="displayMessage"></div>
 			<div id="accordion">
+			<h4 id="pd" style="padding-left: 30px">Reset Password</h4>
 			<form id="resetPasswordform" name="resetPasswordform" method="post">
-	 			<h4 id="pd" style="padding-left: 30px">Reset Password</h4>
 				<div>
 					<div class="row uniform 50%">
 						<div class="12u 12u(mobilep)">
@@ -288,8 +295,9 @@
 					</div>
 				</div>
 			</form>
+			
+			<h4 id="pd" style="padding-left: 30px">Reset Security Questions</h4>
 			<form id="resetSecurityQues" name="resetSecurityQues" method="post">
-	 			<h4 id="pd" style="padding-left: 30px">Reset Security Questions</h4>
 				<div  id="dynamicQuestions"></div>
 				<br>
 					<div class="row uniform 50%">

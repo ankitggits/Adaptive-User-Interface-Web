@@ -1,4 +1,4 @@
-DOMAIN = 'http://10.0.0.9:8080/AUI';
+DOMAIN = 'http://192.168.1.5:8080/AUI';
 
 URL = {
 	registration :  DOMAIN+'/register',
@@ -39,6 +39,8 @@ STATUS = {
 };
 
 TOOLTIP = {
+		
+	//Profile_Low.html	
 	firstName 	: 'Please Enter your First Name having all characters',
 	lastName 	: 'Please Enter your Last Name having all characters',
 	dob			: 'Please Enter your Date Of Birth in dd/mm/yyyy format',
@@ -46,8 +48,22 @@ TOOLTIP = {
 	country		: 'Please Enter your Country Name',
 	state		: 'Please Enter your State Name',
 	city		: 'Please Enter your City',
+	
+	//Account_Low.html
+	oldPassword : 'Please Enter Old Password',
+	newPassword	: 'Please Enter New Password',
+	confirmPassword : 'Please confirm New Password',
+	questions1 : 'Please Select Security Question',
+	questions2 : 'Please Select Security Question',
+	questions3 : 'Please Select Security Question',
+	securityAns1 : 'Please Enter Security Answer',
+	securityAns2 : 'Please Enter Security Answer',
+	securityAns3 : 'Please Enter Security Answer',
+	
+	
+	resetPassword: 'Click here to Reset Password',
 	updateButton: 'Click here to update all values',
 	reset		: 'Click here to reset all values',
-	xyz 		:"Please Enter"
+	xyz 		: 'Please Enter'
 		
 };
