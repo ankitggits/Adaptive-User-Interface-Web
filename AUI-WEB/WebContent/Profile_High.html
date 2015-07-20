@@ -120,17 +120,7 @@
 			});
 			
 			function updateCallBack(responseData){
-	   			var status = responseData.status;
-	   			$('#updateMsg').empty();
-	        	if(status==STATUS.failure) {
-	        		$('#updateMsg').append("<p align='center' style='color:red'>"+responseData.message+"</p>");
-	        	}
-	        	else if(status==STATUS.success) {
-	        		$('#updateMsg').append("<p  align='center' style='color:green'>"+responseData.message+"</p>");
-	        	}
-	        	else{
-	        		$('#updateMsg').append("<p  align='center' style='color:red'>"+responseData.errorMessage+"<p>");
-	        	}
+				statusAlert(responseData);
 	        	getProfileDetails();
 	   		}
 			

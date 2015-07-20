@@ -27,6 +27,8 @@
 		<script src="script/CommonFunctions.js"></script>
 		<script src="js/tooltipsy.min.js"></script>
 		<script src="script/Links.js"></script>
+		<script src="js/sweetalert.min.js"></script> 
+		<link rel="stylesheet" type="text/css" href="css/sweetalert.css">
 <!-- 	 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
  -->  
  
@@ -119,7 +121,7 @@
 	   			}
 			});
 			
-			function updateCallBack(responseData){
+			/* function updateCallBack(responseData){
 	   			var status = responseData.status;
 	   			$('#updateMsg').empty();
 	        	if(status==STATUS.failure) {
@@ -131,6 +133,12 @@
 	        	else{
 	        		$('#updateMsg').append("<p  align='center' style='color:red'>"+responseData.errorMessage+"<p>");
 	        	}
+	        	getProfileDetails();
+	   		} */
+	   		
+	   		
+			function updateCallBack(responseData){
+	   			statusAlert(responseData);
 	        	getProfileDetails();
 	   		}
 			

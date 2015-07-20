@@ -180,3 +180,42 @@ function redirectWithUserLevel(redirectPage){
     	}
 	}, true);
 }
+
+
+
+
+function statusAlert(responseData)
+{
+	if(responseData!=null && responseData.status!=""){
+	var status=responseData.status;
+	
+	if(status==STATUS.success)
+		{
+		swal("Success!!", responseData.message , "success");
+		}
+	else if(status==STATUS.failure)
+		{
+		swal("OOPS!!", responseData.message , "error");
+		}
+	else
+		{
+		swal("Error!!", responseData.errorMessage , "error");
+		}
+}
+}
+
+function statusLocalAlert(status, message)
+{
+	if(status==STATUS.success)
+		{
+		swal("Success!!", message , "success");
+		}
+	else if(status==STATUS.failure)
+		{
+		swal("OOPS!!", message , "error");
+		}
+	else
+		{
+		swal("Error!!", message , "error");
+		}
+}

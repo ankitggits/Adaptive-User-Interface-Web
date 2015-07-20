@@ -26,6 +26,8 @@
 		<script src="script/FormValidation.js"></script>
 		<script src="script/CommonFunctions.js"></script>
 		<script src="script/Links.js"></script>
+		<script src="js/sweetalert.min.js"></script> 
+		<link rel="stylesheet" type="text/css" href="css/sweetalert.css">
 <!-- 	 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
  -->  
  
@@ -137,10 +139,6 @@
 				}
 			} 
 			
-			
-				
-					
-					
 			$('input').focusin(function (){
 				var clicked = $(this).attr('id');
 				modifyFieldCSS(clicked,false);
@@ -155,48 +153,24 @@
 			}
 		 
 		 
+		 
 		 function resetPasswordEvent() {
 				if(validateForgotPassword()==true){
 					var method = METHOD.post;
-					var url = URL.validatePassword;
+					var url = URL.updatePassword;
 					var jsonObject= 
 						{
-						    "password":document.getElementById('oldPassword').value
+						    "password":document.getElementById('confirmPassword').value,
+							"oldPassword":document.getElementById('oldPassword').value
 						};
-					serverRequest(url,method,jsonObject,validatePasswordCallBack,true);
+					serverRequest(url,method,jsonObject,statusAlert,true);
+					$("#resetPasswordform")[0].reset();
+					
 				}
 				else{
 					alert("Validation failed");
 				}
 			}
-		 
-		 function validatePasswordCallBack(responseData){
-			 if(responseData.status==STATUS.success){
-				 var method = METHOD.post;
-				var url = URL.resetPassword;
-				var jsonObject= 
-					{
-					    "password":document.getElementById('confirmPassword').value
-					};
-				serverRequest(url,method,jsonObject,resetPasswordCallBack,true);
-			 }
-			 else if(responseData.status==STATUS.failure){
-				 alert("Old Password is incorrect");
-			 }
-			 else{
-				 alert(responseData.message); 
-			 }
-				 
-		 }
-		 
-		 function resetPasswordCallBack(responseData){
-			 if(responseData.status==STATUS.success){
-					window.location.href = 'Success.html';
-				}
-			 else{
-				 $("div#displayMessage").innerHTML = 'Password cannot be changed';
-			 }
-		 }
 		 
 		 
 		 function createQueAns(){
@@ -218,22 +192,8 @@
 					{
 						 "userQuesAns":userQuesAnsArray
 					};
-				serverRequest(url,method,jsonObject,updateSecurityQuestionsCallBack,true);
+				serverRequest(url,method,jsonObject,statusAlert,true);
 		 }
-		 
-		 function updateSecurityQuestionsCallBack(responseData){
-			 if(responseData.status==STATUS.success){
-				 $("div#displayMessage").innerHTML = 'Security Questions Successfully updated';
-			 }
-			 else if(responseData.status==STATUS.failure){
-				 $("div#displayMessage").innerHTML = 'Security Questions cannot be updated';
-			 }
-			 else{
-				 alert("error occured");
-			 }
-		 }
-		 
-		
 		 
 		</script>
 		   
@@ -322,6 +282,7 @@
 						</div>
 					</div>
 			</form>
+		</div>
 		</div>
 	</section>
 	
