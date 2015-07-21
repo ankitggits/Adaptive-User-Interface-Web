@@ -8,10 +8,12 @@
 		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
 		<script src="js/jquery.min.js"></script>
 		<script src="js/jquery.dropotron.min.js"></script>
-		<script src="js/jquery-ui.js"></script>
+		<script src="js/jquery.scrollgress.min.js"></script>
 		<script src="js/skel.min.js"></script>
 		<script src="js/skel-layers.min.js"></script>
 		<script src="js/init.js"></script>
+		<script src="js/jquery-1.10.2.js"></script>
+	  	<script src="js/jquery-ui.js"></script>
 		<noscript>
 			<link rel="stylesheet" href="css/skel.css" />
 			<link rel="stylesheet" href="css/style.css" />
@@ -36,7 +38,18 @@
 		</style>
 		
 		<script type="text/javascript">
+		
+		function applyAccordian() {
 			
+		     $( "#searchedFlightsTbl" ).accordion({
+		    	header: '.category' ,
+		    	collapsible: true,
+		    	active: false
+		    });
+		}
+		
+		
+		
 			function modifyDatePicker(i){
 				if(i==0)$("#doubledp").hide();
 				else $("#doubledp").show();
@@ -53,6 +66,8 @@
 			}
 			
 			$( document ).ready(function() {
+				
+				
 				var jsonObject = null;
 				
 				restrictDate('journeyDate',true);
@@ -102,15 +117,19 @@
 								 fare =  flight.economyfare;
 							else fare =  flight.businessfare;
 							
-							$("#searchedFlightsTbl tbody").append("<tr style='width:50px'>"+
+							$("#searchedFlightsTbl").append("<tbody class='category'><tr style='width:50px'>"+
 								"<td id='flightLogoTd'><img id='flightlogo' src='images/Flights/"+flight.name+".png'></td>"+
 									"<td><h4 style='margin-bottom: auto;'>"+flight.departure+"</h4><h5> "+flight.source+"</h5></td>"+
 									"<td><h4 style='margin-bottom: auto;'>"+flight.arrival+"</h4><h5> "+flight.destination+"</h5></td>"+
-									"<td>"+fare+"</td>"+
-								"</tr>");
+									"<td>"+fare+"</td></tr></tbody>"+
+									"<tbody><tr><td>Sub Cateogry 1.1</td></tr>"+
+									"<tr><td>Sub Cateogry 1.2</td></tr></tbody>"
+								);
 						});
 						$("#result").show();
 						$("#scrollToFlights").click();
+						applyAccordian();
+						
 	      			}
 	          		else if(responseData.status==STATUS.failure)
 	          		{
