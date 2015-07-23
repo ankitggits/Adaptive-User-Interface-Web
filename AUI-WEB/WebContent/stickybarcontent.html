@@ -1,33 +1,67 @@
 <!DOCTYPE html>
+<head>
+<script src="js/jquery.min.js"></script>
+		<script src="js/jquery-1.10.2.js"></script>
+	  	<script src="js/jquery-ui.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-wide.css" />
+		</noscript>
+		
+		<script src="script/Config.js"></script>
+		<script src="script/FormValidation.js"></script>
+		<script src="script/CommonFunctions.js"></script>
+		<script src="js/sweetalert.min.js"></script> 
+		<link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+</head> 
+<script>
 
+function changeMinDateOfReturn(){
+	var journeyDate = document.getElementById("journeyDate").value;
+}
+
+$(document).ready(function(){
+    
+    restrictDate('journeyDate',true);
+    
+    $("#bookFlight").click(function () {
+    	confirmBookingAlert();
+	});
+})
+
+</script>
 <div id="stickybar" class="expstickybar">
+<div class="headSticky">
 <a href="#togglebar">
-<img src="images/open.gif" data-closeimage="images/close.gif" data-openimage="images/open.gif" style="border-width:0; float:right;" /></a>
-<div style="text-align:center;padding-top:3px">Wanna Book for your favourite Destination!!</div>
+<img src="images/open.gif" data-closeimage="images/close.gif" data-openimage="images/open.gif" style="border-width:0; float:right;padding-top:3px" /></a>
+<div style="text-align:center;padding-top:3px; padding-bottom: 3px;">Book ticket from Mumbai to Banglore</div></div>
 
-<div class="resources" style="margin-top:10px">
+<div class="resources">
 
 
-<div style="float:left">
-	<b>News Related</b>
-	<ul>
-	<li><a href="http://www.cnn.com/">CNN</a></li>
-	<li><a href="http://www.msnbc.com">MSNBC</a></li>
-	<li><a href="http://www.google.com">Google</a></li>
-	<li><a href="http://news.bbc.co.uk">BBC News</a></li>
-	</ul>
+ <section id="main" class="container 75%" >
+ 	
+			<section class="special" style="background-color: #efe0dc">
+							<div class="row uniform 50%" style="padding-left: 36px;margin-left: 0px;">
+								<div class="6u 6u(mobilep)">
+									<input type="number" name="passengers" id="passengers" placeholder="No. of Passengers" min="1" style="width: 300px;"/>
+								</div>
+								<div class="6u 6u(mobilep)" >
+									<input type="text" name="journeyDate" id="journeyDate" onfocus="(this.type='date')" onblur="(this.type='text')" 
+										value="" placeholder="Journey Date" style="width: 300px;  color: grey;"/>
+								</div>
+							</div>
+							<div class="row uniform 50%">
+								<div class="12u 12u(mobilep)">
+									<input type="button" id="bookFlight" class="button special icon fa-search" style="width: 131px" value="Book Flight">
+								</div>
+							</div>
+			</section>
+							
+ 	
+ </section>
+
+</div>
 </div>
 
-<div style="float:left">
-	<b>Technology</b>
-	<ul>
-	<li><a href="http://www.news.com/">News.com</a></li>
-	<li><a href="http://www.slashdot.com">SlashDot</a></li>
-	<li><a href="http://www.digg.com">Digg</a></li>
-	<li><a href="http://www.techcrunch.com">Tech Crunch</a></li>
-	</ul>
-</div>
-
-</div>
-
-</div>

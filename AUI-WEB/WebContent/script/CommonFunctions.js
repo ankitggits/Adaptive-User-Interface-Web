@@ -219,3 +219,17 @@ function statusLocalAlert(status, message)
 		swal("Error!!", message , "error");
 		}
 }
+
+
+function confirmBookingAlert()
+{
+	swal({  
+		title: "Are you sure?",   
+		type: "warning",   
+		showCancelButton: true,   
+		confirmButtonColor: "#DD6B55",   
+		confirmButtonText: "Yes, Book it!",   
+		closeOnConfirm: false }, 
+		function(){   
+			swal("Flight Booked!", "Have a Happy Journey!!", "success"); });
+}

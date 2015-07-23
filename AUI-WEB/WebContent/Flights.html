@@ -25,6 +25,8 @@
 		<script src="script/FormValidation.js"></script>
 		<script src="script/CommonFunctions.js"></script>
 		<script src="script/Links.js"></script>
+		<script src="js/sweetalert.min.js"></script> 
+		<link rel="stylesheet" type="text/css" href="css/sweetalert.css">
 		
 		<style type="text/css">
 			/* th,td:{
@@ -35,6 +37,16 @@
 				background-image: url(images/headerBgImg.png);
 				background-repeat: repeat-x;
 			}
+			
+			.category {
+				background: -moz-linear-gradient(top, #F0F0F0 0, #DBDBDB 100%);
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #F0F0F0), color-stop(100%, #DBDBDB));
+				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F0F0F0', endColorstr='#DBDBDB', GradientType=0);
+				border: 1px solid #B0B0B0;
+				color: #444;
+				font-size: 16px;
+				padding: 3px 10px;
+				}
 		</style>
 		
 		<script type="text/javascript">
@@ -44,7 +56,8 @@
 		     $( "#searchedFlightsTbl" ).accordion({
 		    	header: '.category' ,
 		    	collapsible: true,
-		    	active: false
+		    	active: false,
+		    	slideup: 'slow'
 		    });
 		}
 		
@@ -63,6 +76,10 @@
 			function replan(){
 				$('#message').empty();
 				$("#result").empty();
+			}
+			
+			function bookFlightFunction() {
+				confirmBookingAlert();
 			}
 			
 			$( document ).ready(function() {
@@ -86,6 +103,7 @@
 					serverRequest(url,method,jsonObject,findFlightsCallBack,true);
 				});
 				
+				
 				function findFlightsCallBack(responseData){
 					if(responseData.status==STATUS.success)
 	      			{
@@ -94,7 +112,7 @@
 								"<section class='box'>"+
 									"<h3 style='text-align:center;'>Result</h3>"+
 									"<div class='table-wrapper'>"+
-										"<table id = 'searchedFlightsTbl'>"+
+										"<table id = 'searchedFlightsTbl' >"+
 											"<thead>"+
 												"<tr>"+
 													"<th style='padding-top:10px;font-size: 100%;'><b>Name</b></th>"+
@@ -117,32 +135,44 @@
 								 fare =  flight.economyfare;
 							else fare =  flight.businessfare;
 							
-							$("#searchedFlightsTbl").append("<tbody class='category'><tr style='width:50px'>"+
+							$("#searchedFlightsTbl").append("<tbody class='category' '><tr style='width:50px'>"+
 								"<td id='flightLogoTd'><img id='flightlogo' src='images/Flights/"+flight.name+".png'></td>"+
 									"<td><h4 style='margin-bottom: auto;'>"+flight.departure+"</h4><h5> "+flight.source+"</h5></td>"+
 									"<td><h4 style='margin-bottom: auto;'>"+flight.arrival+"</h4><h5> "+flight.destination+"</h5></td>"+
 									"<td>"+fare+"</td></tr></tbody>"+
-									"<tbody><tr><td>Sub Cateogry 1.1</td></tr>"+
-									"<tr><td>Sub Cateogry 1.2</td></tr></tbody>"
+									"<tbody>"+
+									"<tr><td>Passenger: </td><td>"+1+"</td><td colspan='2'></td></tr>"+
+									"<tr><td>Flight Fare: </td><td>"+fare+"</td><td colspan='2'></td></tr>"+
+									"<tr><td>Total Fare: </td><td>"+1+"</td><td colspan='2'><input type='button' value='Book' onclick='bookFlightFunction();' class='button special icon fa-search bookFlight' style='width: 200px;'/></td></tr>"+
+									"</tbody>"
 								);
 						});
 						$("#result").show();
 						$("#scrollToFlights").click();
+						
 						applyAccordian();
 						
 	      			}
 	          		else if(responseData.status==STATUS.failure)
 	          		{
-	          			$('#message').empty();
+	          			/* $('#message').empty();
 	          			$('#message').append("<footer><h4 style='color:red'>No Flights Found!!!</h4></footer>");
 	          			$("#scrollToMessage").click();
-	          			$( "#message" ).effect( "shake" );
+	          			$( "#message" ).effect( "shake" ); */
+	          			statusLocalAlert('failure',"No Flight Found!!!");
 	          		}
 	          		else{
 	          			alert(responseData.errorMessage);
 	          		}
 				}
+				
+				
+				
+				
 			});
+			
+			
+			
 			
 		</script>
 

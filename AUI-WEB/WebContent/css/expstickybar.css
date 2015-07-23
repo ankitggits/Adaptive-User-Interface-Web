@@ -1,11 +1,11 @@
 .expstickybar{
 position:fixed;
 color: white;
-padding: 5px;
+padding: 0px;
 right:0; /*horizontally center bar in window*/
 left:0; /*horizontally center bar in window*/
 visibility:hidden;
-background: #e43a3d;
+background: #efe0dc;
 z-index: 10000;
 width:auto; /*set width of bar to width of entire window*/
 font-weight:bold;
@@ -13,4 +13,15 @@ font-weight:bold;
 
 .expstickybar a{
 color: white;
+}
+
+
+.headSticky{
+	background:#e89980;
+	height:35px;
+	padding: 5px;
+}
+
+
+	
 }
