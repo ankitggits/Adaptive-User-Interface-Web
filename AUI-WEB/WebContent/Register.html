@@ -107,9 +107,10 @@
 				var objectArray = [];
 				for(var i=0; i<keyArray.length; i++)
 					{
+					objectQues = {};
 					objectQues.questionId=document.getElementById("questions"+keyArray[i]).value;
 					objectQues.answer=document.getElementById("securityAns"+keyArray[i]).value;
-					objectArray[i]=objectQues;
+					objectArray.push(objectQues);
 					}
 				return objectArray;
 			}
