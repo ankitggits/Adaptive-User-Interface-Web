@@ -17,18 +17,15 @@
 </head> 
 <script>
 
-function changeMinDateOfReturn(){
-	var journeyDate = document.getElementById("journeyDate").value;
-}
+
 
 $(document).ready(function(){
-    
     restrictDate('journeyDate',true);
     
     $("#bookFlight").click(function () {
     	confirmBookingAlert();
 	});
-})
+});
 
 </script>
 <div id="stickybar" class="expstickybar">
@@ -45,7 +42,7 @@ $(document).ready(function(){
 			<section class="special" style="background-color: #efe0dc">
 							<div class="row uniform 50%" style="padding-left: 36px;margin-left: 0px;">
 								<div class="6u 6u(mobilep)">
-									<input type="number" name="passengers" id="passengers" placeholder="No. of Passengers" min="1" style="width: 300px;"/>
+									<input type="number" name="passengers" id="passengers" placeholder="No. of Passengers" min="1" style="width: 300px;color: grey;"/>
 								</div>
 								<div class="6u 6u(mobilep)" >
 									<input type="text" name="journeyDate" id="journeyDate" onfocus="(this.type='date')" onblur="(this.type='text')" 
