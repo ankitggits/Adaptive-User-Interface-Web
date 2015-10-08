@@ -79,8 +79,33 @@
 			}
 			
 			function bookFlightFunction() {
-				confirmBookingAlert();
+				
+				var url = URL.bookFlight;
+				var method = METHOD.post;
+				jsonObject = {
+						  "flightCode":"J450",
+						  "source":$('#source').val(),
+						  "destination":$('#destination').val(),
+						  "passengers":$('#passengers').val(),
+						  "journeyDate":$('#journeyDate').val(),
+						  "ticketCancelled":"false"	
+				};
+	   			console.log(JSON.stringify(jsonObject));
+				serverRequest(url,method,jsonObject,bookFlightsCallBack,true);
+				
 			}
+			
+
+			function bookFlightsCallBack(responseData){
+				if(responseData.status==STATUS.success)
+      			{
+					alert("DONEEEEEEEEEE!!!!")
+      			}
+				else
+					{
+					alert("!!!!")
+					}
+					}
 			
 			$( document ).ready(function() {
 				
@@ -93,6 +118,8 @@
 				$('input').click(function(){
 					$('#message').empty();
 				});
+				
+				
 				
 				$('#searchFlight').click(function () {
 					$("#result").empty();
@@ -137,8 +164,10 @@
 							
 							$("#searchedFlightsTbl").append("<tbody class='category' '><tr style='width:50px'>"+
 								"<td id='flightLogoTd'><img id='flightlogo' src='images/Flights/"+flight.name+".png'></td>"+
-									"<td><h4 style='margin-bottom: auto;'>"+flight.departure+"</h4><h5> "+flight.source+"</h5></td>"+
-									"<td><h4 style='margin-bottom: auto;'>"+flight.arrival+"</h4><h5> "+flight.destination+"</h5></td>"+
+									"<td><h4 style='margin-bottom: auto;'>"+flight.departure+"</h4>"+
+										 "<h5> "+flight.source+"</h5></td>"+
+									"<td><h4 style='margin-bottom: auto;'>"+flight.arrival+"</h4>"+
+									"<h5> "+flight.destination+"</h5></td>"+
 									"<td>"+fare+"</td></tr></tbody>"+
 									"<tbody>"+
 									"<tr><td>Passenger: </td><td>"+1+"</td><td colspan='2'></td></tr>"+
@@ -146,6 +175,7 @@
 									"<tr><td>Total Fare: </td><td>"+1+"</td><td colspan='2'><input type='button' value='Book' onclick='bookFlightFunction();' class='button special icon fa-search bookFlight' style='width: 200px;'/></td></tr>"+
 									"</tbody>"
 								);
+							
 						});
 						$("#result").show();
 						$("#scrollToFlights").click();
