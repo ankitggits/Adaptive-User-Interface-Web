@@ -62,6 +62,24 @@
 		}
 		
 		
+		var flightObject = {}
+		flightObject['flightCode'];
+		flightObject['source'];
+		flightObject['destination'];
+		flightObject['passengers'];
+		flightObject['journeyDate'];
+		flightObject['baseFare'];
+		flightObject['questionId'];
+		flightObject['baseFare'];
+		flightObject['passServiceFees'];
+		flightObject['govnServiceFees'];
+		flightObject['totalFare'];
+
+		var baseFare=0;
+		var passServiceFees=0;
+		var govnServiceFees=0;
+		var totalFare=0;
+		
 		
 			function modifyDatePicker(i){
 				if(i==0)$("#doubledp").hide();
@@ -78,46 +96,50 @@
 				$("#result").empty();
 			}
 			
-			function bookFlight(flightCode, source, destination, passengers, journeyDate, callBackMethod){
+			function bookFlight(flightObject, callBackMethod){
 				var url = URL.bookFlight;
 				var method = METHOD.post;
-				jsonObject = {
-						  "flightCode":flightCode,
-						  "source":source,
-						  "destination":destination,
-						  "passengers":passengers,
-						  "journeyDate":journeyDate,
-						  
-				};
+				jsonObject = flightObject;
 	   			console.log(JSON.stringify(jsonObject));
 				serverRequest(url,method,jsonObject,callBackMethod,true);
 			}
 			
 			function bookFlightFunction() {
 				
-				var flightCode="abc1";
-				var source=$('#source').val();
-				var destination=$('#destination').val();
-				var passengers=$('#passengers').val();
-				var journeyDate=$('#journeyDate').val();
+				flightObject.flightCode="abc1";
+				flightObject.source=$('#source').val();
+				flightObject.destination=$('#destination').val();
+				flightObject.passengers=$('#passengers').val();
+				flightObject.journeyDate=$('#journeyDate').val();
+				flightObject.baseFare=baseFare;
+				flightObject.totalFare=totalFare;
+				flightObject.passServiceFees=passServiceFees;
+				flightObject.govnServiceFees=govnServiceFees;
+						
 				
 				if($('#oneWay').is(':checked')) 
 				{ 
 					var callBackMethod= bookFlightsCallBack;
-					bookFlight(flightCode, source, destination, passengers, journeyDate, callBackMethod);
+					bookFlight(flightObject, callBackMethod);
 				}
 				else if($('#roundTrip').is(':checked')) 
 				{ 
 					var callBackMethod=null;
-					bookFlight(flightCode, source, destination, passengers, journeyDate, callBackMethod);
+					bookFlight(flightObject, callBackMethod);
+					flightObject={};
 					
-					var flightCode="abc2";
-					var source=$('#destination').val();
-					var destination=$('#source').val();
-					var passengers=$('#passengers').val();
-					var journeyDate=$('#returnDate').val();
+					flightObject.flightCode="abc2";
+					flightObject.source=$('#destination').val();
+					flightObject.destination=$('#source').val();
+					flightObject.passengers=$('#passengers').val();
+					flightObject.journeyDate=$('#returnDate').val();
+					flightObject.baseFare=baseFare;
+					flightObject.totalFare=totalFare;
+					flightObject.passServiceFees=passServiceFees;
+					flightObject.govnServiceFees=govnServiceFees;
+					
 					var callBackMethod= bookFlightsCallBack;
-					bookFlight(flightCode, source, destination, passengers, journeyDate, callBackMethod);
+					bookFlight(flightObject, callBackMethod);
 				}
 					
 				
@@ -128,7 +150,8 @@
 			function bookFlightsCallBack(responseData){
 				if(responseData.status==STATUS.success)
       			{
-					alert("DONEEEEEEEEEE!!!!")
+				
+					confirmBookingAlert();
       			}
 				else
 					{
@@ -191,9 +214,10 @@
 								 fare =  flight.economyfare;
 							else fare =  flight.businessfare;
 							
-							var passService= (fare*2.7)/100;
-							var govnService= (fare*5.6)/100;
-							var totalFare=($('#passengers').val()*fare)+passService+govnService;
+							passServiceFees= ($('#passengers').val()*fare*2.7)/100;
+							govnServiceFees= ($('#passengers').val()*fare*5.6)/100;
+							totalFare=($('#passengers').val()*fare)+passServiceFees+govnServiceFees;
+							baseFare= fare;
 							
 							$("#searchedFlightsTbl").append("<tbody class='category' '><tr style='width:50px'>"+
 								"<td id='flightLogoTd'><img id='flightlogo' src='images/Flights/"+flight.name+".png'></td>"+
@@ -201,12 +225,12 @@
 										 "<h5> "+flight.source+"</h5></td>"+
 									"<td><h4 style='margin-bottom: auto;'>"+flight.arrival+"</h4>"+
 									"<h5> "+flight.destination+"</h5></td>"+
-									"<td>"+fare+"</td></tr></tbody>"+
+									"<td>"+baseFare+"</td></tr></tbody>"+
 									"<tbody>"+
 									"<tr><td>Passenger: </td><td>"+$('#passengers').val()+"</td><td colspan='2'></td></tr>"+
-									"<tr><td>Flight Fare: </td><td>"+fare+"</td><td colspan='2'></td></tr>"+
-									"<tr><td>Passenger Service Fees: </td><td>"+passService+"</td><td colspan='2'></td></tr>"+
-									"<tr><td>Government Service Tax: </td><td>"+govnService+"</td><td colspan='2'></td></tr>"+
+									"<tr><td>Flight Fare: </td><td>"+baseFare+"</td><td colspan='2'></td></tr>"+
+									"<tr><td>Passenger Service Fees: </td><td>"+passServiceFees+"</td><td colspan='2'></td></tr>"+
+									"<tr><td>Government Service Tax: </td><td>"+govnServiceFees+"</td><td colspan='2'></td></tr>"+
 									"<tr><td>Total Fare: </td><td>"+totalFare+"</td><td colspan='2'><input type='button' value='Book' onclick='bookFlightFunction();' class='button special icon fa-search bookFlight' style='width: 200px;'/></td></tr>"+
 									"</tbody>"
 								);
