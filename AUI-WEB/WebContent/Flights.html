@@ -104,6 +104,56 @@
 				serverRequest(url,method,jsonObject,callBackMethod,true);
 			}
 			
+			function getCities(){
+				var url = URL.getCities;
+				var method = METHOD.get;
+				serverRequest(url,method,null,getCitiesCallBack,true);
+			}
+			
+			function appendCities(data, sourceDestination){
+				   
+				$.each(data, function(key, value) {
+					
+					if(value.length>0){
+					if(key==0)
+					{
+					 var e2 = document.createElement("option");
+					    e2.textContent ="-----  YOUR MOST TRAVELLED CITIES  -----";
+					    sourceDestination.appendChild(e2);
+					    e2.disabled = true;
+					}
+					else if(key==1)
+						{
+						 var e2 = document.createElement("option");
+						    e2.textContent ="----- CITIES YET TO EXPLORE -----";
+						    sourceDestination.appendChild(e2);
+						    e2.disabled = true;
+						}
+					
+					  $.each(value, function(key1, value1) {
+						  var el = document.createElement("option");
+						    el.textContent = value1;
+						    el.value = value1;
+						    sourceDestination.appendChild(el);
+					  });}
+			});
+				
+			}
+			
+			function getCitiesCallBack(responseData){
+				
+				if(responseData.status==STATUS.success)
+      			{
+					var source= document.getElementById('source');
+					var destination= document.getElementById('destination');
+					
+					appendCities(responseData.data,source )  ;
+					appendCities(responseData.data,destination )  ; 
+					
+      			}
+				
+			}
+			
 			function bookFlightFunction() {
 				
 				flightObject.flightCode="abc1";
@@ -161,6 +211,7 @@
 			
 			$( document ).ready(function() {
 				
+				getCities();
 				
 				var jsonObject = null;
 				
@@ -319,12 +370,17 @@
 							
 							<div class="row uniform 50%">
 								<div class="12u 12u(mobilep)">
-									<input type="text" name="source" id="source" list="cityList" placeholder="Source" />
+									<select name="source" id="source" placeholder="Source">
+    									<option>Select Source</option>
+  									</select>
+								
 								</div>
 							</div>
 							<div class="row uniform 50%">
 								<div class="12u 12u(mobilep)">
-									<input type="text" name="destination" id="destination" list="cityList" placeholder="Destination" />
+								<select name="destination" id="destination" placeholder="destination">
+    									<option>Select Destination</option>
+  									</select>
 								</div>
 							</div>
 							<div class="row uniform 50%" id="singledp">
@@ -370,11 +426,6 @@
 							
 							<div id="message"></div>
 							<datalist id="cityList">
-								<option value="Mumbai">
-								<option value="Banglore">
-								<option value="Delhi">
-								<option value="---------">
-								<option value="Aisehi">
 							</datalist>
 						</section>
 					</div>

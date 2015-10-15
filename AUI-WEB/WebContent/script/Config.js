@@ -1,4 +1,4 @@
-DOMAIN = 'http://192.168.1.6:8080/AUI';
+DOMAIN = 'http://10.0.0.12:8080/AUI';
 
 URL = {
 	registration :  DOMAIN+'/register',
@@ -19,7 +19,8 @@ URL = {
 	updatePassword: 	DOMAIN+'/password/update',
 	updateSecurityQuestions: DOMAIN+'/account/updateSecurityQuestions',
 	userLevel	:	   DOMAIN+'/userLevel',
-	bookFlight	:	   DOMAIN+'/flight/bookFlight' 
+	bookFlight	:	   DOMAIN+'/flight/bookFlight' ,
+	getCities	:	   DOMAIN+'/flight/getCities'
 };
 
 METHOD = {
