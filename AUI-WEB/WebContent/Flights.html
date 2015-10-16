@@ -51,17 +51,7 @@
 		
 		<script type="text/javascript">
 		
-		function applyAccordian() {
-			
-		     $( "#searchedFlightsTbl" ).accordion({
-		    	header: '.category' ,
-		    	collapsible: true,
-		    	active: false,
-		    	slideup: 'slow'
-		    });
-		}
-		
-		
+
 		var flightObject = {}
 		flightObject['flightCode'];
 		flightObject['source'];
@@ -79,6 +69,57 @@
 		var passServiceFees=0;
 		var govnServiceFees=0;
 		var totalFare=0;
+		
+		
+		$( document ).ready(function() {
+			
+			getCities();
+			
+			var stored_data = JSON.parse(sessionStorage.getItem('stored_data'));
+			if(null!=stored_data){
+				var stored_passenger = JSON.parse(sessionStorage.getItem('stored_passenger'));
+				var stored_journeyDate = JSON.parse(sessionStorage.getItem('stored_journeyDate'));
+				var source;
+				var destination;
+				
+				
+				$.each(stored_data.data, function(index, flight) {
+					
+					if(index==0)
+						{alert("hii");
+						source=flight.source;
+						destination= flight.destination;
+						}
+				});
+				
+				$('#destination').val(destination).attr("selected", "selected");;
+				$('#source').val(source).attr("selected", "selected");;
+				$('#passengers').val(stored_passenger);
+				$('#journeyDate').val(stored_journeyDate);
+				
+				populateFlight(stored_data, stored_passenger, "economy");
+				
+			}
+			
+			var jsonObject = null;
+			
+			restrictDate('journeyDate',true);
+			restrictDate('returnDate',true);
+			
+			
+			});
+		
+		
+		function applyAccordian() {
+			
+		     $( "#searchedFlightsTbl" ).accordion({
+		    	header: '.category' ,
+		    	collapsible: true,
+		    	active: false,
+		    	slideup: 'slow'
+		    });
+		}
+		
 		
 		
 			function modifyDatePicker(i){
@@ -191,8 +232,6 @@
 					var callBackMethod= bookFlightsCallBack;
 					bookFlight(flightObject, callBackMethod);
 				}
-					
-				
 				
 			}
 			
@@ -207,36 +246,11 @@
 					{
 					alert("!!!!")
 					}
-					}
+				}
 			
-			$( document ).ready(function() {
+			
 				
-				getCities();
-				
-				var jsonObject = null;
-				
-				restrictDate('journeyDate',true);
-				restrictDate('returnDate',true);
-				
-				$('input').click(function(){
-					$('#message').empty();
-				});
-				
-				
-				
-				$('#searchFlight').click(function () {
-					$("#result").empty();
-					var url = URL.searchFlight;
-					var method = METHOD.post;
-					jsonObject = $("form").serializeObject();
-		   			console.log(JSON.stringify(jsonObject));
-					serverRequest(url,method,jsonObject,findFlightsCallBack,true);
-				});
-				
-				
-				function findFlightsCallBack(responseData){
-					if(responseData.status==STATUS.success)
-	      			{
+				function populateFlight(responseData, passenger, compartment){
 						$("#result").append(""+
 							"<div class='12u'>"+
 								"<section class='box'>"+
@@ -261,13 +275,13 @@
 						);
 						$.each(responseData.data, function(index, flight) {
 							var fare = 0;
-							if(jsonObject.compartment=="economy") 
+							if(compartment=="economy") 
 								 fare =  flight.economyfare;
 							else fare =  flight.businessfare;
 							
-							passServiceFees= ($('#passengers').val()*fare*2.7)/100;
-							govnServiceFees= ($('#passengers').val()*fare*5.6)/100;
-							totalFare=($('#passengers').val()*fare)+passServiceFees+govnServiceFees;
+							passServiceFees= (passenger*fare*2.7)/100;
+							govnServiceFees= (passenger*fare*5.6)/100;
+							totalFare=(passenger*fare)+passServiceFees+govnServiceFees;
 							baseFare= fare;
 							
 							$("#searchedFlightsTbl").append("<tbody class='category' '><tr style='width:50px'>"+
@@ -278,47 +292,61 @@
 									"<h5> "+flight.destination+"</h5></td>"+
 									"<td>"+baseFare+"</td></tr></tbody>"+
 									"<tbody>"+
-									"<tr><td>Passenger: </td><td>"+$('#passengers').val()+"</td><td colspan='2'></td></tr>"+
+									"<tr><td>Passenger: </td><td>"+passenger+"</td><td colspan='2'></td></tr>"+
 									"<tr><td>Flight Fare: </td><td>"+baseFare+"</td><td colspan='2'></td></tr>"+
 									"<tr><td>Passenger Service Fees: </td><td>"+passServiceFees+"</td><td colspan='2'></td></tr>"+
 									"<tr><td>Government Service Tax: </td><td>"+govnServiceFees+"</td><td colspan='2'></td></tr>"+
 									"<tr><td>Total Fare: </td><td>"+totalFare+"</td><td colspan='2'><input type='button' value='Book' onclick='bookFlightFunction();' class='button special icon fa-search bookFlight' style='width: 200px;'/></td></tr>"+
 									"</tbody>"
 								);
-							
 						});
 						$("#result").show();
 						$("#scrollToFlights").click();
-						
 						applyAccordian();
-						
-	      			}
-	          		else if(responseData.status==STATUS.failure)
-	          		{
-	          			/* $('#message').empty();
-	          			$('#message').append("<footer><h4 style='color:red'>No Flights Found!!!</h4></footer>");
-	          			$("#scrollToMessage").click();
-	          			$( "#message" ).effect( "shake" ); */
-	          			statusLocalAlert('failure',"No Flight Found!!!");
-	          		}
-	          		else{
-	          			alert(responseData.errorMessage);
-	          		}
+						//sessionStorage.setItem('stored_data', null);
+						//sessionStorage.setItem('stored_passenger', null);
 				}
-				
-				
-				
-				
+			
+			
+
+			$('input').click(function(){
+				$('#message').empty();
 			});
 			
+			$('#searchFlight').click(function () {
+				$("#result").empty();
+				var url = URL.searchFlight;
+				var method = METHOD.post;
+				jsonObject = $("form").serializeObject();
+				console.log($("form").serializeObject());
+	   			console.log(JSON.stringify(jsonObject));
+				serverRequest(url,method,jsonObject,findFlightsCallBack,true);
+			});
 			
+			function findFlightsCallBack(responseData){
+				
+				if(responseData.status==STATUS.success)
+      			{
+					populateFlight(responseData,$('#passengers').val(),jsonObject.compartment);
+					
+      			}
+          		else if(responseData.status==STATUS.failure)
+          		{
+          			/* $('#message').empty();
+          			$('#message').append("<footer><h4 style='color:red'>No Flights Found!!!</h4></footer>");
+          			$("#scrollToMessage").click();
+          			$( "#message" ).effect( "shake" ); */
+          			statusLocalAlert('failure',"No Flight Found!!!");
+          		}
+          		else{
+          			alert(responseData.errorMessage);
+          		}
+			}
 			
 			
 		</script>
-
 </head>
 <body>
-
 		<!-- Header -->
 		<header id="header" class="skel-layers-fixed">
 			<h1><a href="Index.html">ROAM</a></h1>
@@ -447,7 +475,7 @@
 				<li><a href="#" class="icon fa-google-plus"><span class="label">Google+</span></a></li>
 			</ul>
 			<ul class="copyright">
-				<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				<li>&copy; Untitled. All rights reserved.</li><li>Design: Tulip Das</li>
 			</ul>
 	</footer>
 

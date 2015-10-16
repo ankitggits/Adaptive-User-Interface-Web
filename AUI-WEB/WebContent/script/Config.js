@@ -1,4 +1,4 @@
-DOMAIN = 'http://10.0.0.12:8080/AUI';
+DOMAIN = 'http://10.0.0.15:8080/AUI';
 
 URL = {
 	registration :  DOMAIN+'/register',

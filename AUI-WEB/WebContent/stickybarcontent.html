@@ -17,22 +17,69 @@
 </head> 
 <script>
 
+var source="Mumbai";
+var destination = "Banglore";
 
 
 $(document).ready(function(){
+	
+	
     restrictDate('journeyDate',true);
     
-    $("#bookFlight").click(function () {
-    	confirmBookingAlert();
-	});
+    $('p#heading').append("Book Ticket From ");
+    $('p#heading').append(source+" to "+destination);
+    
+    /* function getMostTravelledCities(){
+		var url = URL.getFrequentCities;
+		var method = METHOD.get;
+		serverRequest(url,method,null,getFrequentCitiesCallBack,true);
+	}
+    
+    function getFrequentCitiesCallBack(responseData){
+		
+		if(responseData.status==STATUS.success)
+			{
+			var flight=responseData.data;
+			source= flight.source;
+			destination= flight.destination;
+			$('p#heading').append(source+" to "+destination);	
+			}
+		
+	} */
+	
 });
+
+$('#searchFlight').click(function () {
+	
+	var url = URL.searchFlight;
+	var method = METHOD.post;
+	var jsonObject =	{
+			"way":"oneway",
+			"source":source,
+			"destination":destination,
+			"journeyDate":$('#journeyDate').val(),
+			"returnDate":"",
+			"compartment":"economy",
+			"passengers":$('#passengers').val()
+		}
+	serverRequest(url,method,jsonObject,findFlightsCallBack,true);
+});
+
+function findFlightsCallBack(responseData)
+{	
+	sessionStorage.setItem('stored_data', JSON.stringify(responseData));
+	sessionStorage.setItem('stored_passenger', JSON.stringify($('#passengers').val()));
+	sessionStorage.setItem('stored_journeyDate', JSON.stringify($('#journeyDate').val()));
+	window.location.href = "Flights.html#resultStart";
+}
 
 </script>
 <div id="stickybar" class="expstickybar">
 <div class="headSticky">
 <a href="#togglebar">
 <img src="images/open.gif" data-closeimage="images/close.gif" data-openimage="images/open.gif" style="border-width:0; float:right;padding-top:3px" /></a>
-<div style="text-align:center;padding-top:3px; padding-bottom: 3px;">Book ticket from Mumbai to Banglore</div></div>
+<div style="text-align:center;padding-top:3px; padding-bottom: 3px;">
+<p  id="heading"></p></div></div>
 
 <div class="resources">
 
@@ -51,7 +98,7 @@ $(document).ready(function(){
 							</div>
 							<div class="row uniform 50%">
 								<div class="12u 12u(mobilep)">
-									<input type="button" id="bookFlight" class="button special icon fa-search" style="width: 131px" value="Book Flight">
+									<input type="button" id="searchFlight" class="button special icon fa-search" style="width: 131px" value="Search Flight">
 								</div>
 							</div>
 			</section>
