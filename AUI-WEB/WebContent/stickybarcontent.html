@@ -17,35 +17,30 @@
 </head> 
 <script>
 
-var source="Mumbai";
-var destination = "Banglore";
+var source="";
+var destination="";
 
 
 $(document).ready(function(){
 	
-	
-    restrictDate('journeyDate',true);
+	 getMostTravelledCities();
+     restrictDate('journeyDate',true);
     
-    $('p#heading').append("Book Ticket From ");
-    $('p#heading').append(source+" to "+destination);
-    
-    /* function getMostTravelledCities(){
+     function getMostTravelledCities(){
 		var url = URL.getFrequentCities;
 		var method = METHOD.get;
 		serverRequest(url,method,null,getFrequentCitiesCallBack,true);
 	}
     
     function getFrequentCitiesCallBack(responseData){
-		
-		if(responseData.status==STATUS.success)
-			{
-			var flight=responseData.data;
-			source= flight.source;
-			destination= flight.destination;
-			$('p#heading').append(source+" to "+destination);	
-			}
-		
-	} */
+		if(responseData.status==STATUS.success){
+			var sourceDestinationData=responseData.data;
+			var sourceDestination=sourceDestinationData.split("^");
+			source= sourceDestination[0];
+			destination= sourceDestination[1];
+			$('p#heading').append("Book Ticket From "+source+" to "+destination);
+		}
+	} 
 	
 });
 

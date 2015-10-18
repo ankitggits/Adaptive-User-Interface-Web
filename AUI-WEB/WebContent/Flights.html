@@ -52,6 +52,8 @@
 		<script type="text/javascript">
 		
 
+		
+		
 		var flightObject = {}
 		flightObject['flightCode'];
 		flightObject['source'];
@@ -70,243 +72,30 @@
 		var govnServiceFees=0;
 		var totalFare=0;
 		
+		var selectedSource="";
+		var selectedDestination="";
 		
 		$( document ).ready(function() {
-			
-			getCities();
 			
 			var stored_data = JSON.parse(sessionStorage.getItem('stored_data'));
 			if(null!=stored_data){
 				var stored_passenger = JSON.parse(sessionStorage.getItem('stored_passenger'));
 				var stored_journeyDate = JSON.parse(sessionStorage.getItem('stored_journeyDate'));
-				var source;
-				var destination;
-				
-				
-				$.each(stored_data.data, function(index, flight) {
-					
-					if(index==0)
-						{alert("hii");
-						source=flight.source;
-						destination= flight.destination;
-						}
-				});
-				
-				$('#destination').val(destination).attr("selected", "selected");;
-				$('#source').val(source).attr("selected", "selected");;
+				selectedSource=stored_data.data[0].source;
+				selectedDestination=stored_data.data[0].destination;
 				$('#passengers').val(stored_passenger);
 				$('#journeyDate').val(stored_journeyDate);
-				
 				populateFlight(stored_data, stored_passenger, "economy");
-				
 			}
+			
+			console.log("new :: "+selectedDestination);
+			
+			getCities();
 			
 			var jsonObject = null;
 			
 			restrictDate('journeyDate',true);
 			restrictDate('returnDate',true);
-			
-			
-			});
-		
-		
-		function applyAccordian() {
-			
-		     $( "#searchedFlightsTbl" ).accordion({
-		    	header: '.category' ,
-		    	collapsible: true,
-		    	active: false,
-		    	slideup: 'slow'
-		    });
-		}
-		
-		
-		
-			function modifyDatePicker(i){
-				if(i==0)$("#doubledp").hide();
-				else $("#doubledp").show();
-			}
-			
-			function changeMinDateOfReturn(){
-				var journeyDate = document.getElementById("journeyDate").value;
-				if(journeyDate!="") document.getElementById("returnDate").min = journeyDate;  
-			}
-			
-			function replan(){
-				$('#message').empty();
-				$("#result").empty();
-			}
-			
-			function bookFlight(flightObject, callBackMethod){
-				var url = URL.bookFlight;
-				var method = METHOD.post;
-				jsonObject = flightObject;
-	   			console.log(JSON.stringify(jsonObject));
-				serverRequest(url,method,jsonObject,callBackMethod,true);
-			}
-			
-			function getCities(){
-				var url = URL.getCities;
-				var method = METHOD.get;
-				serverRequest(url,method,null,getCitiesCallBack,true);
-			}
-			
-			function appendCities(data, sourceDestination){
-				   
-				$.each(data, function(key, value) {
-					
-					if(value.length>0){
-					if(key==0)
-					{
-					 var e2 = document.createElement("option");
-					    e2.textContent ="-----  YOUR MOST TRAVELLED CITIES  -----";
-					    sourceDestination.appendChild(e2);
-					    e2.disabled = true;
-					}
-					else if(key==1)
-						{
-						 var e2 = document.createElement("option");
-						    e2.textContent ="----- CITIES YET TO EXPLORE -----";
-						    sourceDestination.appendChild(e2);
-						    e2.disabled = true;
-						}
-					
-					  $.each(value, function(key1, value1) {
-						  var el = document.createElement("option");
-						    el.textContent = value1;
-						    el.value = value1;
-						    sourceDestination.appendChild(el);
-					  });}
-			});
-				
-			}
-			
-			function getCitiesCallBack(responseData){
-				
-				if(responseData.status==STATUS.success)
-      			{
-					var source= document.getElementById('source');
-					var destination= document.getElementById('destination');
-					
-					appendCities(responseData.data,source )  ;
-					appendCities(responseData.data,destination )  ; 
-					
-      			}
-				
-			}
-			
-			function bookFlightFunction() {
-				
-				flightObject.flightCode="abc1";
-				flightObject.source=$('#source').val();
-				flightObject.destination=$('#destination').val();
-				flightObject.passengers=$('#passengers').val();
-				flightObject.journeyDate=$('#journeyDate').val();
-				flightObject.baseFare=baseFare;
-				flightObject.totalFare=totalFare;
-				flightObject.passServiceFees=passServiceFees;
-				flightObject.govnServiceFees=govnServiceFees;
-						
-				
-				if($('#oneWay').is(':checked')) 
-				{ 
-					var callBackMethod= bookFlightsCallBack;
-					bookFlight(flightObject, callBackMethod);
-				}
-				else if($('#roundTrip').is(':checked')) 
-				{ 
-					var callBackMethod=null;
-					bookFlight(flightObject, callBackMethod);
-					flightObject={};
-					
-					flightObject.flightCode="abc2";
-					flightObject.source=$('#destination').val();
-					flightObject.destination=$('#source').val();
-					flightObject.passengers=$('#passengers').val();
-					flightObject.journeyDate=$('#returnDate').val();
-					flightObject.baseFare=baseFare;
-					flightObject.totalFare=totalFare;
-					flightObject.passServiceFees=passServiceFees;
-					flightObject.govnServiceFees=govnServiceFees;
-					
-					var callBackMethod= bookFlightsCallBack;
-					bookFlight(flightObject, callBackMethod);
-				}
-				
-			}
-			
-
-			function bookFlightsCallBack(responseData){
-				if(responseData.status==STATUS.success)
-      			{
-				
-					confirmBookingAlert();
-      			}
-				else
-					{
-					alert("!!!!")
-					}
-				}
-			
-			
-				
-				function populateFlight(responseData, passenger, compartment){
-						$("#result").append(""+
-							"<div class='12u'>"+
-								"<section class='box'>"+
-									"<h3 style='text-align:center;'>Result</h3>"+
-									"<div class='table-wrapper'>"+
-										"<table id = 'searchedFlightsTbl' >"+
-											"<thead>"+
-												"<tr>"+
-													"<th style='padding-top:10px;font-size: 100%;'><b>Name</b></th>"+
-													"<th style='padding-top:10px;font-size: 100%;'><b>Departure</b></th>"+
-													"<th style='padding-top:10px;font-size: 100%;'><b>Arrival</b></th>"+
-													"<th style='padding-top:10px;font-size: 100%;'><b>Price</b></th>"+
-												"</tr>"+
-											"</thead>"+
-											"<tbody>"+
-											"<tr></tr>"+
-											"</tbody>"+
-										"</table>"+
-									"</div>"+
-								"</section>"+
-							"</div>"		
-						);
-						$.each(responseData.data, function(index, flight) {
-							var fare = 0;
-							if(compartment=="economy") 
-								 fare =  flight.economyfare;
-							else fare =  flight.businessfare;
-							
-							passServiceFees= (passenger*fare*2.7)/100;
-							govnServiceFees= (passenger*fare*5.6)/100;
-							totalFare=(passenger*fare)+passServiceFees+govnServiceFees;
-							baseFare= fare;
-							
-							$("#searchedFlightsTbl").append("<tbody class='category' '><tr style='width:50px'>"+
-								"<td id='flightLogoTd'><img id='flightlogo' src='images/Flights/"+flight.name+".png'></td>"+
-									"<td><h4 style='margin-bottom: auto;'>"+flight.departure+"</h4>"+
-										 "<h5> "+flight.source+"</h5></td>"+
-									"<td><h4 style='margin-bottom: auto;'>"+flight.arrival+"</h4>"+
-									"<h5> "+flight.destination+"</h5></td>"+
-									"<td>"+baseFare+"</td></tr></tbody>"+
-									"<tbody>"+
-									"<tr><td>Passenger: </td><td>"+passenger+"</td><td colspan='2'></td></tr>"+
-									"<tr><td>Flight Fare: </td><td>"+baseFare+"</td><td colspan='2'></td></tr>"+
-									"<tr><td>Passenger Service Fees: </td><td>"+passServiceFees+"</td><td colspan='2'></td></tr>"+
-									"<tr><td>Government Service Tax: </td><td>"+govnServiceFees+"</td><td colspan='2'></td></tr>"+
-									"<tr><td>Total Fare: </td><td>"+totalFare+"</td><td colspan='2'><input type='button' value='Book' onclick='bookFlightFunction();' class='button special icon fa-search bookFlight' style='width: 200px;'/></td></tr>"+
-									"</tbody>"
-								);
-						});
-						$("#result").show();
-						$("#scrollToFlights").click();
-						applyAccordian();
-						//sessionStorage.setItem('stored_data', null);
-						//sessionStorage.setItem('stored_passenger', null);
-				}
-			
 			
 
 			$('input').click(function(){
@@ -323,28 +112,229 @@
 				serverRequest(url,method,jsonObject,findFlightsCallBack,true);
 			});
 			
-			function findFlightsCallBack(responseData){
+		});
+		
+		function applyAccordian() {
+			
+		     $( "#searchedFlightsTbl" ).accordion({
+		    	header: '.category' ,
+		    	collapsible: true,
+		    	active: false,
+		    	slideup: 'slow'
+		    });
+		}
+	
+	
+	
+		function modifyDatePicker(i){
+			if(i==0)$("#doubledp").hide();
+			else $("#doubledp").show();
+		}
+		
+		function changeMinDateOfReturn(){
+			var journeyDate = document.getElementById("journeyDate").value;
+			if(journeyDate!="") document.getElementById("returnDate").min = journeyDate;  
+		}
+		
+		function replan(){
+			$('#message').empty();
+			$("#result").empty();
+		}
+		
+		function getCities(){
+			var url = URL.getCities;
+			var method = METHOD.get;
+			serverRequest(url,method,null,getCitiesCallBack,true);
+		}
+		
+		function getCitiesCallBack(responseData){
+			
+			if(responseData.status==STATUS.success){
+				var source= document.getElementById('source');
+				var destination= document.getElementById('destination');
 				
-				if(responseData.status==STATUS.success)
-      			{
-					populateFlight(responseData,$('#passengers').val(),jsonObject.compartment);
-					
-      			}
-          		else if(responseData.status==STATUS.failure)
-          		{
-          			/* $('#message').empty();
-          			$('#message').append("<footer><h4 style='color:red'>No Flights Found!!!</h4></footer>");
-          			$("#scrollToMessage").click();
-          			$( "#message" ).effect( "shake" ); */
-          			statusLocalAlert('failure',"No Flight Found!!!");
-          		}
-          		else{
-          			alert(responseData.errorMessage);
-          		}
+				if(selectedSource!=null){
+					appendCities(responseData.data,source, selectedSource ,true)  ;
+				}
+				if(selectedDestination!=null){
+					appendCities(responseData.data,destination, selectedDestination,false )  ;
+				}
+     		}
+			sessionStorage.setItem('stored_data', null);
+			sessionStorage.setItem('stored_passenger', null);
+			sessionStorage.setItem('stored_journeyDate', null);
+		}
+		
+		function appendCities(data, sourceDestination, selected, isSource){
+			
+			 for(var key=0;key<data.length;key++){
+				 var value = data[key];
+				 if(value.length>0){
+					 if(key==0){
+					 	var e2 = document.createElement("option");
+					    e2.textContent ="-----  YOUR MOST TRAVELLED CITIES  -----";
+					    sourceDestination.appendChild(e2);
+					    e2.disabled = true;
+					 }else if(key==1){
+					 	var e2 = document.createElement("option");
+					    e2.textContent ="----- CITIES YET TO EXPLORE -----";
+					    sourceDestination.appendChild(e2);
+					    e2.disabled = true;
+					 }
+					 var keyToSelect = 0;
+					 
+					 for(var i=0; i<value.length; i++){
+						 var current = value[i];
+						 if(selected==current){
+					    	 keyToSelect = i;
+					     }
+				    	 var el = document.createElement("option");
+						 el.textContent = current;
+						 el.value = current;
+						 sourceDestination.appendChild(el);
+					  }
+					 
+					 if(null!=JSON.parse(sessionStorage.getItem('stored_data'))){
+						  if(value.indexOf(selected)!= -1){
+							  keyToSelect=keyToSelect+2;
+						  }else{
+							  keyToSelect=keyToSelect+3;
+						  }
+						  if(isSource==true) {
+							  document.getElementById("source").options[keyToSelect].selected = true;
+						  }else{
+							  document.getElementById("destination").options[keyToSelect].selected = true;
+						  }
+					 }
+				}
 			}
+		}
+		
+		function bookFlight(flightObject, callBackMethod){
+			var url = URL.bookFlight;
+			var method = METHOD.post;
+			jsonObject = flightObject;
+   			console.log(JSON.stringify(jsonObject));
+			serverRequest(url,method,jsonObject,callBackMethod,true);
+		}
+		
+		
+		function bookFlightFunction() {
+			
+			flightObject.flightCode="abc1";
+			flightObject.source=$('#source').val();
+			flightObject.destination=$('#destination').val();
+			flightObject.passengers=$('#passengers').val();
+			flightObject.journeyDate=$('#journeyDate').val();
+			flightObject.baseFare=baseFare;
+			flightObject.totalFare=totalFare;
+			flightObject.passServiceFees=passServiceFees;
+			flightObject.govnServiceFees=govnServiceFees;
+					
+			
+			if($('#oneWay').is(':checked')) { 
+				var callBackMethod= bookFlightsCallBack;
+				bookFlight(flightObject, callBackMethod);
+			}else if($('#roundTrip').is(':checked')) { 
+				var callBackMethod=null;
+				bookFlight(flightObject, callBackMethod);
+				flightObject={};
+				
+				flightObject.flightCode="abc2";
+				flightObject.source=$('#destination').val();
+				flightObject.destination=$('#source').val();
+				flightObject.passengers=$('#passengers').val();
+				flightObject.journeyDate=$('#returnDate').val();
+				flightObject.baseFare=baseFare;
+				flightObject.totalFare=totalFare;
+				flightObject.passServiceFees=passServiceFees;
+				flightObject.govnServiceFees=govnServiceFees;
+				
+				var callBackMethod= bookFlightsCallBack;
+				bookFlight(flightObject, callBackMethod);
+			}
+		}
+		
+		function bookFlightsCallBack(responseData){
+			if(responseData.status==STATUS.success){
+				confirmBookingAlert();
+    			}else{
+			alert("!!!!");
+			}
+		}
+				
+		function populateFlight(responseData, passenger, compartment){
+				$("#result").append(""+
+					"<div class='12u'>"+
+						"<section class='box'>"+
+							"<h3 style='text-align:center;'>Result</h3>"+
+							"<div class='table-wrapper'>"+
+								"<table id = 'searchedFlightsTbl' >"+
+									"<thead>"+
+										"<tr>"+
+											"<th style='padding-top:10px;font-size: 100%;'><b>Name</b></th>"+
+											"<th style='padding-top:10px;font-size: 100%;'><b>Departure</b></th>"+
+											"<th style='padding-top:10px;font-size: 100%;'><b>Arrival</b></th>"+
+											"<th style='padding-top:10px;font-size: 100%;'><b>Price</b></th>"+
+										"</tr>"+
+									"</thead>"+
+									"<tbody>"+
+									"<tr></tr>"+
+									"</tbody>"+
+								"</table>"+
+							"</div>"+
+						"</section>"+
+					"</div>"		
+				);
+				$.each(responseData.data, function(index, flight) {
+					var fare = 0;
+					if(compartment=="economy") 
+						 fare =  flight.economyfare;
+					else fare =  flight.businessfare;
+					
+					passServiceFees= Math.round((passenger*fare*2.7)/100,2);
+					govnServiceFees= Math.round((passenger*fare*5.6)/100,2);
+					totalFare=(passenger*fare)+passServiceFees+govnServiceFees;
+					baseFare= fare;
+					
+					$("#searchedFlightsTbl").append("<tbody class='category' '><tr style='width:50px'>"+
+						"<td id='flightLogoTd'><img id='flightlogo' src='images/Flights/"+flight.name+".png'></td>"+
+							"<td><h4 style='margin-bottom: auto;'>"+flight.departure+"</h4>"+
+								 "<h5> "+flight.source+"</h5></td>"+
+							"<td><h4 style='margin-bottom: auto;'>"+flight.arrival+"</h4>"+
+							"<h5> "+flight.destination+"</h5></td>"+
+							"<td>"+baseFare+"</td></tr></tbody>"+
+							"<tbody>"+
+							"<tr><td>Passenger: </td><td>"+passenger+"</td><td colspan='2'></td></tr>"+
+							"<tr><td>Flight Fare: </td><td>"+baseFare+"</td><td colspan='2'></td></tr>"+
+							"<tr><td>Passenger Service Fees: </td><td>"+passServiceFees+"</td><td colspan='2'></td></tr>"+
+							"<tr><td>Government Service Tax: </td><td>"+govnServiceFees+"</td><td colspan='2'></td></tr>"+
+							"<tr><td>Total Fare: </td><td>"+totalFare+"</td><td colspan='2'><input type='button' value='Book' onclick='bookFlightFunction();' class='button special icon fa-search bookFlight' style='width: 200px;'/></td></tr>"+
+							"</tbody>"
+						);
+				});
+				$("#result").show();
+				$("#scrollToFlights").click();
+				applyAccordian();
+		}
+	
+		function findFlightsCallBack(responseData){
+			
+			if(responseData.status==STATUS.success){
+				populateFlight(responseData,$('#passengers').val(),"economy");
+     		}else if(responseData.status==STATUS.failure){
+       			/* $('#message').empty();
+       			$('#message').append("<footer><h4 style='color:red'>No Flights Found!!!</h4></footer>");
+       			$("#scrollToMessage").click();
+       			$( "#message" ).effect( "shake" ); */
+       			statusLocalAlert('failure',"No Flight Found!!!");
+         	}else{
+         		alert(responseData.errorMessage);
+         	}
+		}
 			
 			
-		</script>
+</script>
 </head>
 <body>
 		<!-- Header -->
@@ -398,17 +388,16 @@
 							
 							<div class="row uniform 50%">
 								<div class="12u 12u(mobilep)">
-									<select name="source" id="source" placeholder="Source">
-    									<option>Select Source</option>
+									<select name="source" id="source">
+										<option disabled selected hidden>----Select Source----</option>
   									</select>
-								
 								</div>
 							</div>
 							<div class="row uniform 50%">
 								<div class="12u 12u(mobilep)">
-								<select name="destination" id="destination" placeholder="destination">
-    									<option>Select Destination</option>
-  									</select>
+									<select name="destination" id="destination">
+	  									 <option  disabled selected hidden>----Select Destination----</option> 
+	  								</select>
 								</div>
 							</div>
 							<div class="row uniform 50%" id="singledp">
@@ -478,6 +467,10 @@
 				<li>&copy; Untitled. All rights reserved.</li><li>Design: Tulip Das</li>
 			</ul>
 	</footer>
+	
+	<script type="text/javascript">
+		
+	</script>
 
 </body>
 </html>
