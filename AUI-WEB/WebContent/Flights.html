@@ -172,12 +172,12 @@
 				 if(value.length>0){
 					 if(key==0){
 					 	var e2 = document.createElement("option");
-					    e2.textContent ="-----  YOUR MOST TRAVELLED CITIES  -----";
+					    e2.textContent ="-----  YOUR TRAVELLED CITIES  -----";
 					    sourceDestination.appendChild(e2);
 					    e2.disabled = true;
 					 }else if(key==1){
 					 	var e2 = document.createElement("option");
-					    e2.textContent ="----- CITIES YET TO EXPLORE -----";
+					    e2.textContent ="----- CITIES YET TO TRAVEL -----";
 					    sourceDestination.appendChild(e2);
 					    e2.disabled = true;
 					 }
@@ -185,30 +185,36 @@
 					 
 					 for(var i=0; i<value.length; i++){
 						 var current = value[i];
-						 if(selected==current){
-					    	 keyToSelect = i;
-					     }
+						 
 				    	 var el = document.createElement("option");
 						 el.textContent = current;
 						 el.value = current;
 						 sourceDestination.appendChild(el);
+						 if(selected==current){
+					    	 keyToSelect = i;
+					    	 if(null!=JSON.parse(sessionStorage.getItem('stored_data'))){
+								 console.log("selected: "+selected+" keyToSelect "+keyToSelect)
+								  if(value.indexOf(selected)!= -1){
+									  keyToSelect=keyToSelect+2;
+								  }
+								  if(isSource) {
+									  document.getElementById("source").options[keyToSelect].selected = true;
+								  }else{
+									  document.getElementById("destination").options[keyToSelect].selected = true;
+								  }
+							 }  
+					     }
 					  }
-					 
-					 if(null!=JSON.parse(sessionStorage.getItem('stored_data'))){
-						  if(value.indexOf(selected)!= -1){
-							  keyToSelect=keyToSelect+2;
-						  }else{
-							  keyToSelect=keyToSelect+3;
-						  }
-						  if(isSource==true) {
-							  document.getElementById("source").options[keyToSelect].selected = true;
-						  }else{
-							  document.getElementById("destination").options[keyToSelect].selected = true;
-						  }
-					 }
+				   }
 				}
 			}
+		
+	/* 	function confirmBookFlight(flightObject, callBackMethod){
+			confirmBookingAlert(flightObject,callBackMethod);
+			
 		}
+ */
+
 		
 		function bookFlight(flightObject, callBackMethod){
 			var url = URL.bookFlight;
@@ -216,7 +222,7 @@
 			jsonObject = flightObject;
    			console.log(JSON.stringify(jsonObject));
 			serverRequest(url,method,jsonObject,callBackMethod,true);
-		}
+		} 
 		
 		
 		function bookFlightFunction() {
@@ -234,9 +240,11 @@
 			
 			if($('#oneWay').is(':checked')) { 
 				var callBackMethod= bookFlightsCallBack;
+				//confirmBookFlight(flightObject, callBackMethod);
 				bookFlight(flightObject, callBackMethod);
 			}else if($('#roundTrip').is(':checked')) { 
 				var callBackMethod=null;
+				//confirmBookFlight(flightObject, callBackMethod);
 				bookFlight(flightObject, callBackMethod);
 				flightObject={};
 				
@@ -251,11 +259,12 @@
 				flightObject.govnServiceFees=govnServiceFees;
 				
 				var callBackMethod= bookFlightsCallBack;
+				//confirmBookFlight(flightObject, callBackMethod);
 				bookFlight(flightObject, callBackMethod);
 			}
 		}
 		
-		function bookFlightsCallBack(responseData){
+		 function bookFlightsCallBack(responseData){
 			if(responseData.status==STATUS.success){
 				confirmBookingAlert();
     			}else{
