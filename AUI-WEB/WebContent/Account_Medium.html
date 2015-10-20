@@ -103,7 +103,7 @@
 			}
 
 			
-			function getUserSecurityQuestions(){
+function getUserSecurityQuestions(){
 				
 				var method = METHOD.get;
 				var url = URL.existingAccountUserQuestions;
@@ -173,6 +173,7 @@
 				var objectArray = [];
 				for(var i=0; i<keyArray.length; i++)
 					{
+					objectQues={};
 					objectQues.questionId=document.getElementById("questions"+keyArray[i]).value;
 					objectQues.answer=document.getElementById("securityAns"+keyArray[i]).value;
 					objectArray[i]=objectQues;
@@ -188,22 +189,8 @@
 					{
 						 "userQuesAns":userQuesAnsArray
 					};
-				serverRequest(url,method,jsonObject,updateSecurityQuestionsCallBack,true);
+				serverRequest(url,method,jsonObject,statusAlert,true);
 		 }
-		 
-		 function updateSecurityQuestionsCallBack(responseData){
-			 if(responseData.status==STATUS.success){
-				 $("div#displayMessage").innerHTML = 'Security Questions Successfully updated';
-			 }
-			 else if(responseData.status==STATUS.failure){
-				 $("div#displayMessage").innerHTML = 'Security Questions cannot be updated';
-			 }
-			 else{
-				 alert("error occured");
-			 }
-		 }
-		 
-		
 		 
 		</script>
 		   
