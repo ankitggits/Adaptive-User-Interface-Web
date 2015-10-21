@@ -32,6 +32,21 @@
  -->  
  
  	<style type="text/css">
+ 		.rating {
+				  unicode-bidi: bidi-override;
+				  direction: rtl;
+				}
+				.rating > span {
+				  display: inline-block;
+				  position: relative;
+				  width: 1.1em;
+				}
+				.rating > span:hover:before,
+				.rating > span:hover ~ span:before {
+				   content: "\2605";
+				   position: absolute;
+				}
+ 	
  		h4 {
  			background-image: url(images/Rod.png);
  			background-repeat: no-repeat;
@@ -59,15 +74,21 @@
 	objectQues['answer'];
 		
 	
-	$(function() {
+	/* $(function() {
+		
 	    $( "#accordion" ).accordion({
 	      	heightStyle: "content",
 	    	collapsible: true
 	    });
-	  });
+	  }); */
 	
 	
 		$( document ).ready(function (){
+			
+			$( "#accordion" ).accordion({
+		      	heightStyle: "content",
+		    	collapsible: true
+		    });
 			
 			getAllSecurityQuestions();
 			getUserSecurityQuestions();

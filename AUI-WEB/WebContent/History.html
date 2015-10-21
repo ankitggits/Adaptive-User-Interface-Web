@@ -20,17 +20,124 @@
 		</noscript>
 		<link rel="stylesheet" href="style/commonStyle.css"/>
 		
-		<style type="text/css">
+		<!-- <style type="text/css">
 			h4{
 				text-align: center;
 			}
+		</style> -->
+		<style type="text/css">
+			/* th,td:{
+				text-align: center;
+			} */
+			
+			th {
+				background-image: url(images/headerBgImg.png);
+				background-repeat: repeat-x;
+			}
+			
+			.category {
+				background: -moz-linear-gradient(top, #F0F0F0 0, #DBDBDB 100%);
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #F0F0F0), color-stop(100%, #DBDBDB));
+				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F0F0F0', endColorstr='#DBDBDB', GradientType=0);
+				border: 1px solid #B0B0B0;
+				color: #444;
+				font-size: 16px;
+				padding: 3px 10px;
+				}
 		</style>
-		
 		<script src="script/Config.js"></script>
 		<script src="script/FormValidation.js"></script>
 		<script src="script/CommonFunctions.js"></script>
 		<script src="script/Links.js"></script>
+		<script type="text/javascript">
 		
+		$( document ).ready(function() {
+			
+			getBookedFlight();
+	
+			function getBookedFlight() {
+				$("#result").empty();
+				var url = URL.getBooking;
+				var method = METHOD.get;
+				serverRequest(url,method,null,populateTickets,true);
+			}
+			
+		});
+		
+		function populateTickets(responseData){
+			if(responseData.status==STATUS.success){
+				$("#result").append(""+
+					"<div class='12u'>"+
+						"<section class='box'>"+
+						"<h3 style='text-align:center;'>Booking History</h3>"+
+							"<div class='table-wrapper'>"+
+								"<table id = 'bookedFlightsTbl' >"+
+									"<thead>"+
+										"<tr>"+
+											"<th style='padding-top:10px;font-size: 100%;'><b>S.No</b></th>"+
+											"<th style='padding-top:10px;font-size: 100%;'><b>Booked Date</b></th>"+
+											"<th style='padding-top:10px;font-size: 100%;'><b>Source</b></th>"+
+											"<th style='padding-top:10px;font-size: 100%;'><b>Destination</b></th>"+
+											"<th style='padding-top:10px;font-size: 100%;'><b>Journey Date</b>"+
+											"<th style='padding-top:10px;font-size: 100%;'><b>Passengers</b></th>"+
+											"<th style='padding-top:10px;font-size: 100%;'><b>Total fare</b></th>"+
+										"</tr>"+
+										"<tr>"+
+											"<th></th>"+
+											"<th>(yyyy-mm-dd)</th>"+
+											"<th></th>"+
+											"<th></th>"+
+											"<th>(yyyy-mm-dd)</th>"+
+											"<th></th>"+
+											"<th></th>"+
+										"</tr>"+
+									"</thead>"+
+									"<tbody>"+
+									"<tr></tr>"+
+									"</tbody>"+
+								"</table>"+
+							"</div>"+
+						"</section>"+
+					"</div>"		
+				);
+				$.each(responseData.data, function(index, ticket) {
+				
+					$("#bookedFlightsTbl").append("<tbody class='category' '><tr style='width:50px'>"+
+							"<td>"+(index+1)+"."+"</td>"+
+							"<td>"+ticket.createdOn+"</td>"+
+							"<td>"+ticket.source+"</td>"+
+							"<td>"+ticket.destination+"</td>"+
+							"<td>"+ticket.journeyDate+"</td>"+
+							"<td>"+ticket.passengers+"</td>"+
+							"<td>"+ticket.totalFare+"</td>"+
+							"</tbody>"
+						);
+				});
+				$("#result").show();
+			}else if(responseData.status==STATUS.failure){
+				$("#result").append(""+
+						"<div class='12u'>"+
+							"<section class='box'>"+
+								"<h3 style='text-align:center;'>Booking History</h3>"+
+								"<div class='table-wrapper'>"+
+								"<table id = 'bookedFlightsTbl' >"+
+								"<thead>"+
+									"<tr>"+
+										"<th style='padding-top:10px;font-size: 100%;text-align:center;'><b>No Ticket Booked!!!!</b></th>"+
+									"</tr>"+
+								"</tbody>"+
+								"</table>"+
+								"</div>"+
+							"</section>"+
+						"</div>"		
+					);
+			}
+	}
+		
+		
+		
+		
+		</script>
 	</head>
 	<body>
 		<!-- Header -->
@@ -57,70 +164,17 @@
 		</header>
 		
 		<!-- Main -->
-		<section id="main" class="container">
+		<!-- <section id="main" class="container">
+			<section class="box special" id="formSection">
 				<header>
-						<h3>Booking History</h3>
+					<h4>Booking History</h4>
 				</header>
-				<section class="box special features">
-					<div class="box special">
-						<section >
-							<span id="bookTicket" onclick="#" style="cursor: pointer;">
-								<img src="images/ticket-template.jpg" alt="" />
-							</span>
-							<h4><B>Booking Date :- 15-APR-2015</B></h4>
-							<input type="button" value="Cancel" class="alt" onclick="cancle()" style="width: 130px"/>
-							<a href="#" class="button icon fa-download">Download</a>
-						</section>
-					</div>
-					<div class="features-row">
-						<section style="width: 60%">
-							<span id="bookTicket" onclick="#" style="cursor: pointer;">
-								<img src="images/ticket-template.jpg" alt="" />
-							</span>
-						</section>
-						<section style="width: 40%">
-							<h4><B>DATE :- 15-APR-2015</B></h4>
-							<BR>
-							<input type="button" value="Cancel" class="alt" onclick="cancle()" style="width: 130px"/>
-							<BR>
-							<BR>
-							<a href="#" class="button icon fa-download">Download</a>
-						</section>
-					</div>
-					<div class="features-row">
-						<section style="width: 60%">
-							<span id="bookTicket" onclick="#" style="cursor: pointer;">
-								<img src="images/ticket-template.jpg" alt="" />
-							</span>
-						</section>
-						<section style="width: 40%">
-							<h4><B>DATE :- 15-APR-2015</B></h4>
-							<BR>
-							<input type="button" value="Cancel" class="alt" onclick="cancle()" style="width: 130px"/>
-							<BR>
-							<BR>
-							<a href="#" class="button icon fa-download">Download</a>
-						</section>
-					</div>
-				</section>
-				
-				<!-- <div class="row">
-					<div class="8u 8u(narrower)">
-						<section class="box special">
-							<img src="images/ticket-template.jpg" alt="" />
-							
-						</section>
-					</div>
-					<div class="4u 4u(narrower)">
-						<section class="box special">
-							<h4>Date:15-Apr-2015</h4>
-							<input type="button" value="Cancel" class="alt" onclick="cancle()" style="width: 150px"/>
-						</section>
-					</div>
-				</div> -->
-				
-		</section>
-
+				<div id='resultStart'><BR><BR><BR></div>
+				<div class="row" id="result"></div>					
+			</section>
+		</section> -->
+				<div id='resultStart'></div>
+				<div class="row" id="result"></div>
 		<!-- Footer -->
 			<footer id="footer">
 				<ul class="icons">

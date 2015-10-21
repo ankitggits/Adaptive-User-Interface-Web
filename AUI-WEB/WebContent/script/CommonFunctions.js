@@ -177,6 +177,7 @@ function redirectWithUserLevel(redirectPage){
 		var status = responseData.status;
     	if(status==STATUS.success) {
     		window.location.href = redirectPage+'_'+responseData.userLevelIndicator+'.html';
+    		sessionStorage.setItem('stored_isUserLevelChanged', JSON.stringify(responseData.userLevelChanged));
     	}
 	}, true);
 }

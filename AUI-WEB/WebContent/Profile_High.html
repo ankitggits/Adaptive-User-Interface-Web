@@ -14,7 +14,8 @@
 		<script src="js/init.js"></script>
 		<script src="js/jquery-1.10.2.js"></script>
 	  	<script src="js/jquery-ui.js"></script>
-		
+		<link rel="stylesheet" href="css/dialog.css" />
+		<script src="script/jquery-1.6.4.min.js"></script>
 		<noscript>
 			<link rel="stylesheet" href="css/skel.css" />
 			<link rel="stylesheet" href="css/style.css" />
@@ -31,6 +32,21 @@
  -->  
  
  	<style type="text/css">
+ 	
+ 	.rating {
+				  unicode-bidi: bidi-override;
+				  direction: rtl;
+				}
+				.rating > span {
+				  display: inline-block;
+				  position: relative;
+				  width: 1.1em;
+				}
+				.rating > span:hover:before,
+				.rating > span:hover ~ span:before {
+				   content: "\2605";
+				   position: absolute;
+				}
  	
  		h4 {
  			background-image: url(images/Rod.png);
@@ -61,14 +77,33 @@
  	
 	<script type="text/javascript">
 		
-		$(function() {
-		    $( "#accordion" ).accordion({
+	/* $(function() {
+		
+	    $( "#accordion" ).accordion({
+	      	heightStyle: "content",
+	    	collapsible: true
+	    });
+	  }); */
+		
+		$( document ).ready(function (){
+			
+			$( "#accordion" ).accordion({
 		      	heightStyle: "content",
 		    	collapsible: true
 		    });
-		  });
-		
-		$( document ).ready(function (){
+			
+			// When clicking on the button close or the mask layer the popup closed
+			$('a.close, #mask, span.starRate').live('click', function() {
+				$('#mask , .login-popup').fadeOut(300, function() {
+					$('#mask').remove();
+					$('.msgblock').replaceWith("");
+				});
+				var clickedStarId = $(this).attr('id');
+				if($(this).attr('class')=="starRate"){
+					alert("clickedStar "+ clickedStarId);
+				}
+				return false;
+			});
 			
 			$('input').focusin(function (){
 				var clicked = $(this).attr('id');
@@ -131,7 +166,34 @@
 			$("#cd").click(function(){
 				
 			});
+			
+			var stored_data = JSON.parse(sessionStorage.getItem('stored_isUserLevelChanged'));
+			if(stored_data!=null && stored_data==true){
+				alert("Aya re");
+				myfunction();
+				sessionStorage.setItem('stored_isUserLevelChanged', JSON.stringify(false));
+			}
 		});
+		
+		function myfunction() {
+			//Getting the variable's value from a link 
+			//var loginBox = $(this).attr('id');
+			var loginBox = "#login-box";
+			//Fade in the Popup
+			$(loginBox).fadeIn(300);
+			//Set the center alignment padding + border see css style
+			var popMargTop = ($(loginBox).height() + 24) / 2;
+			var popMargLeft = ($(loginBox).width() + 24) / 2;
+
+			$(loginBox).css({
+				'margin-top' : -popMargTop,
+				'margin-left' : -popMargLeft
+			});
+			// Add the mask to body
+			$('body').append('<div id="mask"></div>');
+			$('#mask').fadeIn(300);
+			return false;
+		}
 		</script>
 		   
 </head>
@@ -268,5 +330,24 @@
 				<li>&copy; Untitled. All rights reserved.</li><li>Design: Tulip Das</li>
 			</ul>
 	</footer>
+	
+	<div id="login-box" class="login-popup">
+
+		<a href="#" class="close"> 
+		<img src="images/close_pop.png" class="btn_close"	title="Close Window" alt="Close" /></a>
+		<table id="popup-table">
+			<tr>
+				<td>Hi Please rate this app</td>
+			
+				<td  class="rating">
+					<span id="rate1" class="starRate">☆</span>
+					<span id="rate2" class="starRate">☆</span>
+					<span id="rate3" class="starRate">☆</span>
+					<span id="rate4" class="starRate">☆</span>
+					<span id="rate5" class="starRate">☆</span>
+				</td>
+			</tr>
+		</table>
+	</div>
 </body>
 </html>
