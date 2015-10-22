@@ -109,9 +109,12 @@
 			</ul>
 	</footer>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
 							
-				hasEverTravelled();
+				
+				$( document ).ready(function() {
+					hasEverTravelled();
+				});
 				
 				function hasEverTravelled(){
 					var url = URL.hasEverTravelled;
@@ -122,20 +125,19 @@
 	
 				function hasEverTravelledCallBack(responseData){
 					 if(responseData.status==STATUS.success){
-						 console.log("User has booked " +responseData.data+" tickets");
-						 var importCSS = document.createElement('link');
-						 importCSS.rel = 'stylesheet';
-						 importCSS.href = 'css/expstickybar.css';
-						 document.head.appendChild(importCSS);
-						 
-						 var importJs = document.createElement('script');
-						 importJs.type = 'text/javascript';
-						 importJs.src = 'js/expstickybar.js';
-						 document.head.appendChild(importJs);
+
+						 var mystickybar=new expstickybar({
+						 	id: "stickybar", //id of sticky bar DIV
+						 	position:'bottom', //'top' or 'bottom'
+						 	revealtype:'mouseover', //'mouseover' or 'manual'
+						 	peekamount:35, //number of pixels to reveal when sticky bar is closed
+						 	externalcontent:'stickybarcontent.html', //path to sticky bar content file on your server, or "" if content is defined inline on the page
+						 	speed:500 //duration of animation (in millisecs)
+						 });
 					 }
 				}
 			
-</script> -->
+</script>
 
 </body>
 </html>

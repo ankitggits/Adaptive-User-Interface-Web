@@ -28,6 +28,8 @@
 		<script src="script/CommonFunctions.js"></script>
 		<script src="js/tooltipsy.min.js"></script>
 		<script src="script/Links.js"></script>
+		<script src="js/sweetalert.min.js"></script> 
+		<link rel="stylesheet" type="text/css" href="css/sweetalert.css">
 <!-- 	 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
  -->  
  
@@ -76,31 +78,31 @@
  	</style>
  	
 	<script type="text/javascript">
-		
-	/* $(function() {
+	var j = jQuery.noConflict( true );
+	 j(function() {
 		
 	    $( "#accordion" ).accordion({
 	      	heightStyle: "content",
 	    	collapsible: true
 	    });
-	  }); */
+	  }); 
+	  
+	 
 		
-		$( document ).ready(function (){
-			
-			$( "#accordion" ).accordion({
-		      	heightStyle: "content",
-		    	collapsible: true
-		    });
+		j( document ).ready(function (){
 			
 			// When clicking on the button close or the mask layer the popup closed
-			$('a.close, #mask, span.starRate').live('click', function() {
+			j('a.close, #mask, span.starRate').live('click', function() {
 				$('#mask , .login-popup').fadeOut(300, function() {
 					$('#mask').remove();
 					$('.msgblock').replaceWith("");
 				});
 				var clickedStarId = $(this).attr('id');
 				if($(this).attr('class')=="starRate"){
-					alert("clickedStar "+ clickedStarId);
+					var method = METHOD.post;
+					var url = URL.logUserRating;
+					var data= clickedStarId.slice(-1);
+					serverRequest(url,method,data,null,true);
 				}
 				return false;
 			});
@@ -169,7 +171,6 @@
 			
 			var stored_data = JSON.parse(sessionStorage.getItem('stored_isUserLevelChanged'));
 			if(stored_data!=null && stored_data==true){
-				alert("Aya re");
 				myfunction();
 				sessionStorage.setItem('stored_isUserLevelChanged', JSON.stringify(false));
 			}
@@ -340,11 +341,11 @@
 				<td>Hi Please rate this app</td>
 			
 				<td  class="rating">
-					<span id="rate1" class="starRate">☆</span>
-					<span id="rate2" class="starRate">☆</span>
-					<span id="rate3" class="starRate">☆</span>
-					<span id="rate4" class="starRate">☆</span>
 					<span id="rate5" class="starRate">☆</span>
+					<span id="rate4" class="starRate">☆</span>
+					<span id="rate3" class="starRate">☆</span>
+					<span id="rate2" class="starRate">☆</span>
+					<span id="rate1" class="starRate">☆</span>
 				</td>
 			</tr>
 		</table>

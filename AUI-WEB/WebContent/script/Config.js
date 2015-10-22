@@ -1,4 +1,4 @@
-DOMAIN = 'http://192.168.8.100:8080/AUI';
+DOMAIN = 'http://localhost:8080/AUI';
 
 URL = {
 	registration :  DOMAIN+'/register',

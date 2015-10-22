@@ -14,9 +14,8 @@
 		<script src="js/init.js"></script>
 		<script src="js/jquery-1.10.2.js"></script>
 	  	<script src="js/jquery-ui.js"></script>
-	  	<link rel="stylesheet" href="css/dialog.css" />
-		<script src="script/jquery-1.6.4.min.js"></script>
-		
+		<!-- <link rel="stylesheet" href="css/dialog.css" />
+		<script src="script/jquery-1.6.4.min.js"></script> -->
 		<noscript>
 			<link rel="stylesheet" href="css/skel.css" />
 			<link rel="stylesheet" href="css/style.css" />
@@ -35,8 +34,7 @@
  -->  
  		
  	<style type="text/css">
- 	
- 	.rating {
+ 	/* .rating {
 				  unicode-bidi: bidi-override;
 				  direction: rtl;
 				}
@@ -49,8 +47,7 @@
 				.rating > span:hover ~ span:before {
 				   content: "\2605";
 				   position: absolute;
-				}
-				
+				} */
  		h4 {
  			background-image: url(images/Rod.png);
  			background-repeat: no-repeat;
@@ -81,20 +78,21 @@
 	<script type="text/javascript">
 		
 		$( document ).ready(function (){
-			
-			// When clicking on the button close or the mask layer the popup closed
-			$('a.close, #mask, span.starRate').live('click', function() {
+			/* $('a.close, #mask, span.starRate').live('click', function() {
 				$('#mask , .login-popup').fadeOut(300, function() {
 					$('#mask').remove();
 					$('.msgblock').replaceWith("");
 				});
 				var clickedStarId = $(this).attr('id');
 				if($(this).attr('class')=="starRate"){
-					alert("clickedStar "+ clickedStarId);
+					var method = METHOD.post;
+					var url = URL.logUserRating;
+					alert(clickedStarId.slice(-1));
 				}
 				return false;
 			});
 			
+			myfunction(); */
 			
 			
 			$('input').each(function(){
@@ -181,14 +179,9 @@
 				
 			});
 			
-			var stored_data = JSON.parse(sessionStorage.getItem('stored_isUserLevelChanged'));
-			if(stored_data!=null && stored_data==true){
-				myfunction();
-				sessionStorage.setItem('stored_isUserLevelChanged', JSON.stringify(false));
-			}
 		});
 		
-		function myfunction() {
+		/* function myfunction() {
 			//Getting the variable's value from a link 
 			//var loginBox = $(this).attr('id');
 			var loginBox = "#login-box";
@@ -206,8 +199,9 @@
 			$('body').append('<div id="mask"></div>');
 			$('#mask').fadeIn(300);
 			return false;
-		}
+		} */
 		</script>
+		
 		   
 </head>
 <body >
@@ -345,7 +339,7 @@
 			</ul>
 	</footer>
 	
-	<div id="login-box" class="login-popup">
+	<!-- <div id="login-box" class="login-popup">
 
 		<a href="#" class="close"> 
 		<img src="images/close_pop.png" class="btn_close"	title="Close Window" alt="Close" /></a>
@@ -354,14 +348,14 @@
 				<td>Hi Please rate this app</td>
 			
 				<td  class="rating">
-					<span id="rate1" class="starRate">☆</span>
-					<span id="rate2" class="starRate">☆</span>
-					<span id="rate3" class="starRate">☆</span>
-					<span id="rate4" class="starRate">☆</span>
 					<span id="rate5" class="starRate">☆</span>
+					<span id="rate4" class="starRate">☆</span>
+					<span id="rate3" class="starRate">☆</span>
+					<span id="rate2" class="starRate">☆</span>
+					<span id="rate1" class="starRate">☆</span>
 				</td>
 			</tr>
 		</table>
-	</div>
+	</div> -->
 </body>
 </html>

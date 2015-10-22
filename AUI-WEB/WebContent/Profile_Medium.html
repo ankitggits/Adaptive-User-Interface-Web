@@ -95,6 +95,12 @@
 				return false;
 			});
 			
+			var stored_data = JSON.parse(sessionStorage.getItem('stored_isUserLevelChanged'));
+			if(stored_data!=null && stored_data==true){
+				myfunction();
+				sessionStorage.setItem('stored_isUserLevelChanged', JSON.stringify(false));
+			}
+			
 			$('input').focusin(function (){
 				var clicked = $(this).attr('id');
 				modifyFieldCSS(clicked,false);
@@ -157,12 +163,6 @@
 				
 			});
 			
-			/* var stored_data = JSON.parse(sessionStorage.getItem('stored_isUserLevelChanged'));
-			if(stored_data!=null && stored_data==true){
-				myfunction();
-				sessionStorage.setItem('stored_isUserLevelChanged', JSON.stringify(false));
-			} */
-			myfunction();
 		});
 		
 		function myfunction() {
@@ -330,11 +330,11 @@
 				<td>Hi Please rate this app</td>
 			
 				<td  class="rating">
-					<span id="rate1" class="starRate">☆</span>
-					<span id="rate2" class="starRate">☆</span>
-					<span id="rate3" class="starRate">☆</span>
-					<span id="rate4" class="starRate">☆</span>
 					<span id="rate5" class="starRate">☆</span>
+					<span id="rate4" class="starRate">☆</span>
+					<span id="rate3" class="starRate">☆</span>
+					<span id="rate2" class="starRate">☆</span>
+					<span id="rate1" class="starRate">☆</span>
 				</td>
 			</tr>
 		</table>
