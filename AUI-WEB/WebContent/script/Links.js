@@ -43,10 +43,4 @@ function searchContent(value){
 	else if(value=="offers"){
 		window.location.href = 'Offers.html'; 
 	}
-	else if(value=="history"){
-		window.location.href = 'History.html'; 
-	}
-	else if(value=="mngAccount"){
-		window.location.href = 'Account.html'; 
-	}
 }

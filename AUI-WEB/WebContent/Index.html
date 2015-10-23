@@ -28,6 +28,23 @@
 			
 			$( document ).ready(function() {
 				
+				getLoggedUser();
+				
+				function getLoggedUser() {
+					var method = METHOD.get;
+					var url = URL.loggedUser;
+					serverRequest(url,method,null,loggedUserCallBack,true);
+				}	
+						
+				function loggedUserCallBack(responseData) {
+					if(responseData.status=="success"){
+						var method = METHOD.get;
+						var url = URL.logout;
+						serverRequest(url,method,null,null,true);
+					}
+				}
+				
+				
 				$('form#login').submit(function () {
 		   			if(validateLogin()==true){
 			   			var jsonObject = $(this).serializeObject();
